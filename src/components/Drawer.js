@@ -29,7 +29,7 @@ function Drawer() {
             <img className="removeBtn" src="/img/remove.svg" alt="Remove" />
           </div>
         </div>
-        <div class="cartTotalBlock">
+        <div className="cartTotalBlock">
           <ul>
             <li>
               <span>Итого:</span>

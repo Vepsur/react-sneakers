@@ -4,8 +4,10 @@ import Header from "./components/Header";
 import Drawer from "./components/Drawer";
 
 function App() {
-  const [items, setItems] = React.useState([])
+  const [items, setItems] = React.useState([]);
+  const [cartItems, setCartItems] = React.useState([]);
   const [cartOpened, setCartOpened] = React.useState(false);
+  // const [itemAdded, setItemAdded] = React.useContext(true);
 
   React.useEffect(() => {
     fetch('https://629f57ac8b939d3dc2959500.mockapi.io/items')
@@ -16,9 +18,39 @@ function App() {
       });
   }, []);
 
+  const onAddToCart = (obj) => {
+    // setCartItems([...cartItems, obj]); !!! bad practice
+    setCartItems(prev => {
+        let check = false;
+        let counter = 0;
+        let cartArr = prev.slice();
+        let refresh = false;
+
+        for (let item of prev) {
+          item.title === obj.title ? check = counter : check = false;
+          if (check !== false) {
+            cartArr.splice(check, 1);
+            counter--;
+            refresh = true;
+          }
+          counter++;
+        }
+        
+        if (refresh) {
+          if (cartArr.length === 0) {
+            return [];
+          }
+          return cartArr;
+        } else {
+          return [...prev, obj];
+        }
+    }); // !!! good practice, dont allow to lost data
+
+  };
+
   return (
     <div className="wrapper clear">
-      {cartOpened && <Drawer onClickClose={() => setCartOpened(false)} />}
+      {cartOpened && <Drawer items={cartItems} onClickClose={() => setCartOpened(false)} />}
       {/*=== {cartOpened ? <Drawer onClickClose={() => setCartOpened(false)}/> : null}*/}
       <Header
         onClickCart={() => setCartOpened(true)}
@@ -32,13 +64,13 @@ function App() {
           </div>
         </div>
         <div className="d-flex flex-wrap">
-          {items.map((obj) => (
+          {items.map((item) => (
             <Card
-              title={obj.title}
-              price={obj.price}
-              image={obj.imageUrl}
+              title={item.title}
+              price={item.price}
+              image={item.imageUrl}
               onClickFavorite={() => console.log('Add to favorite')}
-              onClickPlus={() => console.log('Add to cart')}
+              onPlus={() => onAddToCart(item)}
             />
           ))}
         </div>

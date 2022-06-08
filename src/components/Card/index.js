@@ -1,11 +1,12 @@
 import React from 'react';
 import styles from './Card.module.scss'
 
-export default function Card(props) {
+export default function Card({ image, title, price, onPlus }) {
   const [isAdded, setIsAdded] = React.useState(false);
   const [isFavorite, setIsFavorite] = React.useState(false);
 
   const onClickPlus = () => {
+    onPlus({ image, title, price });
     setIsAdded(!isAdded);
   };
 
@@ -22,12 +23,12 @@ export default function Card(props) {
           onClick={onClickFavorite}
         />
       </div>
-      <img width={133} height={112} src={props.image} alt="Sneakers" />
-      <h5>{props.title}</h5>
+      <img width={133} height={112} src={image} alt="Sneakers" />
+      <h5>{title}</h5>
       <div className="d-flex justify-between align-center">
         <div className="d-flex flex-column">
           <span>Цена:</span>
-          <b>{props.price} руб.</b>
+          <b>{price} руб.</b>
         </div>
         <img
           className={styles.plus}

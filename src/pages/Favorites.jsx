@@ -1,15 +1,29 @@
 import React from "react";
 
+import AppContext from "../context";
 import Card from "../components/Card";
 
-const Favorites = ({
-  items, 
+function Favorites({
   searchValue,
   setSearchValue,
-  onPlus,
-  onFavorites,
   onChangeSearchInput
-}) => {
+}) {
+  const { favoriteItems, isLoading } = React.useContext(AppContext);
+
+  const renderItems = () => {
+    const filterItems = favoriteItems.filter(item =>
+      item.title.toLowerCase().includes(searchValue.toLowerCase())
+    );
+
+    return (
+      isLoading ? [...Array(4)] : filterItems).map((item, index) => (
+        <Card
+          key={index}
+          {...item}
+        />
+      ))
+  }
+
   return (
     <div>
       <div className="d-flex align-center justify-between mb-40">
@@ -28,15 +42,7 @@ const Favorites = ({
         </div>
       </div>
       <div className="cardList">
-        {items.filter(item => item.title.toLowerCase().includes(searchValue.toLowerCase())).map((item) => (
-          <Card
-            key={item.imageUrl}
-            favorited={true}
-            onFavorites={onFavorites}
-            onPlus={onPlus}
-            {...item}
-          />
-        ))}
+        {renderItems()}
       </div>
     </div>
   )

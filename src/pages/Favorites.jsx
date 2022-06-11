@@ -4,11 +4,12 @@ import AppContext from "../context";
 import Card from "../components/Card";
 
 function Favorites({
+  cartItemCheck,
   searchValue,
   setSearchValue,
   onChangeSearchInput
 }) {
-  const { favoriteItems, isLoading } = React.useContext(AppContext);
+  const { favoriteItemCheck, favoriteItems, isLoading } = React.useContext(AppContext);
 
   const renderItems = () => {
     const filterItems = favoriteItems.filter(item =>
@@ -18,7 +19,9 @@ function Favorites({
     return (
       isLoading ? [...Array(4)] : filterItems).map((item, index) => (
         <Card
+          cartItemCheck={cartItemCheck}
           key={index}
+          favoriteItemCheck={favoriteItemCheck}
           {...item}
         />
       ))

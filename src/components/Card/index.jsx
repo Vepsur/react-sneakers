@@ -9,8 +9,10 @@ export default function Card({
   imageUrl,
   title,
   price,
+  cartItemCheck,
+  favoriteItemCheck
 }) {
-  const {cartItemCheck, favoriteItemCheck, onAddToCart, onAddToFavorites, isLoading } = React.useContext(AppContext);
+  const { onAddToCart, onAddToFavorites, isLoading } = React.useContext(AppContext);
 
   return (
     <div className={styles.card}>
@@ -31,13 +33,14 @@ export default function Card({
             <rect x="0" y="0" rx="5" ry="5" width="150" height="90" />
           </ContentLoader>
           : <>
-            <div className={styles.favorite}>
-              <img
-                src={favoriteItemCheck(title) ? "/img/heart_checked.svg" : "/img/heart_unchecked.svg"}
-                alt="Uliked"
-                onClick={() => onAddToFavorites({ id, imageUrl, title, price })}
-              />
-            </div>
+            {favoriteItemCheck &&
+              (<div className={styles.favorite}>
+                <img
+                  src={favoriteItemCheck(title) ? "/img/heart_checked.svg" : "/img/heart_unchecked.svg"}
+                  alt="Uliked"
+                  onClick={() => onAddToFavorites({ id, imageUrl, title, price })}
+                />
+              </div>)}
             <img width={133} height={112} src={imageUrl} alt="Sneakers" />
             <h5>{title}</h5>
             <div className="d-flex justify-between align-center">
@@ -45,14 +48,15 @@ export default function Card({
                 <span>Цена:</span>
                 <b>{price} руб.</b>
               </div>
-              <img
-                className={styles.plus}
-                onClick={() => onAddToCart({ id, imageUrl, title, price })}
-                width={32}
-                height={32}
-                src={cartItemCheck(title) ? "/img/btn_checked.svg" : "/img/btn_unchecked.svg"}
-                alt="Plus"
-              />
+              {cartItemCheck &&
+                (<img
+                  className={styles.plus}
+                  onClick={() => onAddToCart({ id, imageUrl, title, price })}
+                  width={32}
+                  height={32}
+                  src={cartItemCheck(title) ? "/img/btn_checked.svg" : "/img/btn_unchecked.svg"}
+                  alt="Plus"
+                />)}
             </div>
           </>
       }

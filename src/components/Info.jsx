@@ -1,18 +1,17 @@
 import React from 'react'
-import AppContext from '../context'
 
-const Info = ({ title, description, image, imageHeight, imageWidth }) => {
-  const { setCartOpened } = React.useContext(AppContext);
+import styles from './Drawer/Drawer.module.scss'
 
+const Info = ({ onClose, title, description, image }) => {
   return (
     <>
-      <div className="emptyCart">
+      <div className={styles.emptyCart}>
         <img width={120} src={image} alt="Empty box" />
         <h2>{title}</h2>
         <p>{description}</p>
-        <button onClick={() => setCartOpened(false)} className="greenButton">
+        <button onClick={() => onClose(false)} className={styles.greenButton}>
           Вернуться назад<img
-            className="arrow"
+            className={styles.arrow}
             src="/img/return_arrow.svg"
             alt="Arrow"
           />

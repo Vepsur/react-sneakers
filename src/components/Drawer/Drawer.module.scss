@@ -1,0 +1,212 @@
+.overlay {
+  position: fixed;
+  display: flex;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+}
+
+.overlayVisible {
+  visibility: visible;
+  opacity: 1;
+
+  .drawer {
+    transform: translateX(0);
+  }
+}
+
+.shading {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.drawer {
+  position: absolute;
+  height: 100%;
+  width: 420px;
+  right: 0;
+  background: #FFFFFF;
+  box-shadow: -10px 4px 24px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.5s ease-in-out;
+
+  .emptyCart {
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    margin-bottom: 50px;
+    display: flex;
+    flex: auto;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    .greenButton {
+      position: relative;
+
+      &:hover {
+        img {
+          transform: translateX(-8px);
+        }
+      }
+
+      img {
+        position: absolute;
+        left: 30px;
+        top: 21px;
+        transition: transform 0.15s ease-in-out;
+      }
+    }
+  }
+
+  .items {
+    flex: 1;
+    overflow: auto;
+  }
+
+  h2 {
+    margin: 0;
+
+    img {
+      cursor: pointer;
+      opacity: 1;
+      cursor: pointer;
+      transition: opacity 0.1s ease-in-out;
+
+      &:hover {
+        opacity: 0.5;
+      }
+    }
+  }
+}
+
+.cartTotalBlock {
+  ul {
+    margin-bottom: 40px !important;
+  }
+
+  li {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 20px;
+  }
+
+  div {
+    flex: 1;
+    height: 1px;
+    border-bottom: 1px dashed #DFDFDF;
+    position: relative;
+    top: -3px;
+    margin: 0 5px;
+  }
+
+  .greenButton {
+    position: relative;
+
+    &:disabled {
+      animation: button-loading 1.5s ease-in-out infinite;
+    }
+
+    &:hover {
+      img {
+        transform: translateX(8px);
+      }
+    }
+
+
+    img {
+      position: absolute;
+      right: 30px;
+      top: 21px;
+      transition: transform 0.15s ease-in-out;
+    }
+  }
+}
+
+.greenButton {
+  width: 100%;
+  height: 55px;
+  background: #9DD558;
+  border-radius: 18px;
+  border: none;
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+
+  &:disabled {
+    background-color: #bebebe !important;
+    cursor: default;
+  }
+
+  &:hover {
+    background: lighten($color: #9DD558, $amount: 5%);
+  }
+
+  &:active {
+    background: darken($color: #9DD558, $amount: 5%);
+  }
+}
+
+.cartItem {
+  border: 1px solid #F3F3F3;
+  border-radius: 20px;
+  padding: 20px;
+  overflow: hidden;
+  margin-bottom: 20px;
+
+  .cartItemImg {
+    width: 70px;
+    height: 70px;
+    background-size: contain;
+    background-position: 0 -2px;
+    background-repeat: no-repeat;
+    margin-right: 20px;
+  }
+
+  p {
+    font-size: 16px;
+    margin: 0;
+  }
+
+  b {
+    font-size: 14px;
+  }
+
+  .removeBtn {
+    opacity: 0.5;
+    cursor: pointer;
+    transition: opacity 0.1s ease-in-out;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+@keyframes button-loading {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.7;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}

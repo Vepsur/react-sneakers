@@ -1,12 +1,15 @@
 import React from "react";
-import AppContext from "../context";
-import Info from "./Info";
+import Info from "../Info";
 import axios from "axios";
+
+import { useCart } from '../../hooks/useCart'
+
+import styles from './Drawer.module.scss'
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-function Drawer({ onRemove, items = [] }) {
-  const { cartItems, setCartOpened, setCartItems } = React.useContext(AppContext);
+function Drawer({ opened, onClose, onRemove, items = [] }) {
+  const { cartItems, setCartItems, totalPrice } = useCart();
   const [isOrderComplete, setIsOrderComplete] = React.useState(false);
   const [orderId, setOrderId] = React.useState(null);
   const [isLoading, setIsLoading] = React.useState(false);
@@ -36,21 +39,21 @@ function Drawer({ onRemove, items = [] }) {
   }
 
   return (
-    <div className="overlay">
-      <div onClick={() => setCartOpened(false)} className="shading"></div>
-      <div className="drawer">
+    <div className={`${styles.overlay} ${opened ? styles.overlayVisible : ''}`}>
+      <div onClick={() => onClose()} className={styles.shading}></div>
+      <div className={styles.drawer}>
         <h2 className="mb-30 d-flex justify-between">
           Корзина
-          <img onClick={() => setCartOpened(false)} className="removeBtn" src="/img/remove.svg" alt="Close" />
+          <img onClick={() => onClose()} className={styles.removeBtn} src="/img/remove.svg" alt="Close" />
         </h2>
         {(items.length > 0) ? (
           <>
-            <div className="items">
+            <div className={styles.items}>
               {items.map((obj) => (
-                <div key={obj.id} className="cartItem d-flex align-center">
+                <div key={obj.id} className={`${styles.cartItem} d-flex align-center"`}>
                   <div
                     style={{ backgroundImage: `url(${obj.imageUrl})` }}
-                    className="cartItemImg">
+                    className={styles.cartItemImg}>
                   </div>
                   <div className="mr-20 flex">
                     <p className="mb-5">{obj.title}</p>
@@ -58,33 +61,34 @@ function Drawer({ onRemove, items = [] }) {
                   </div>
                   <img
                     onClick={() => onRemove(obj.id)}
-                    className="removeBtn"
+                    className={styles.removeBtn}
                     src="/img/remove.svg"
                     alt="Remove"
                   />
                 </div>
               ))}
             </div>
-            <div className="cartTotalBlock">
+            <div className={styles.cartTotalBlock}>
               <ul>
                 <li>
                   <span>Итого:</span>
                   <div></div>
-                  <b>21 498 руб.</b>
+                  <b>{totalPrice} руб.</b>
                 </li>
                 <li>
                   <span>Налог 5%:</span>
                   <div></div>
-                  <b>1074 руб.</b>
+                  <b>{Math.round(totalPrice * 5) / 100} руб.</b>
                 </li>
               </ul>
-              <button disabled={isLoading} onClick={onClickOrder} className="greenButton">
+              <button disabled={isLoading} onClick={onClickOrder} className={styles.greenButton}>
                 Оформить заказ <img src="/img/checkout_arrow.svg" alt="Arrow" />
               </button>
             </div>
           </>
         ) : (
           <Info
+            onClose={onClose}
             title={isOrderComplete ? "Заказ оформлен" : "Корзина пуста"}
             description={isOrderComplete ? `Ваш заказ #${orderId} скоро будет передан курьерской доставке` : "Добавьте хотя бы одну пару кроссовок, чтобы сделать заказ."}
             image={isOrderComplete ? "/img/complete_order.png" : "/img/empty_cart.png"}

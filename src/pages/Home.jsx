@@ -4,11 +4,12 @@ import AppContext from "../context";
 import Card from "../components/Card";
 
 function Home({
+  cartItemCheck,
   searchValue,
   setSearchValue,
   onChangeSearchInput
 }) {
-  const { items, isLoading } = React.useContext(AppContext);
+  const { items, isLoading, favoriteItemCheck } = React.useContext(AppContext);
 
   const renderItems = () => {
     const filterItems = items.filter(item =>
@@ -18,6 +19,8 @@ function Home({
     return (
       isLoading ? [...Array(12)] : filterItems).map((item, index) => (
         <Card
+          cartItemCheck={cartItemCheck}
+          favoriteItemCheck={favoriteItemCheck}
           key={index}
           {...item}
         />

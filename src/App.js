@@ -6,6 +6,7 @@ import Header from "./components/Header";
 import Drawer from "./components/Drawer";
 import Home from "./pages/Home";
 import Favorites from "./pages/Favorites";
+import Orders from "./pages/Orders";
 import AppContext from "./context";
 
 function App() {
@@ -19,14 +20,21 @@ function App() {
   React.useEffect(() => {
     async function fetchData() {
       // setIsLoading(true);
-      const cartItemsResp = await axios.get('https://629f57ac8b939d3dc2959500.mockapi.io/cartItems');
-      const favoriteItemResp = await axios.get('https://629f57ac8b939d3dc2959500.mockapi.io/favorites');
-      const itemsResp = await axios.get('https://629f57ac8b939d3dc2959500.mockapi.io/items');
-      setIsLoading(false);
+      try {
+        const [cartItemsResp, favoriteItemResp, itemsResp] = await Promise.all([
+          axios.get('https://629f57ac8b939d3dc2959500.mockapi.io/cartItems'),
+          axios.get('https://629f57ac8b939d3dc2959500.mockapi.io/favorites'),
+          axios.get('https://629f57ac8b939d3dc2959500.mockapi.io/items'),
+        ]);
 
-      setCartItems(cartItemsResp.data);
-      setFavoriteItems(favoriteItemResp.data);
-      setItems(itemsResp.data);
+        setIsLoading(false);
+  
+        setCartItems(cartItemsResp.data);
+        setFavoriteItems(favoriteItemResp.data);
+        setItems(itemsResp.data);
+      } catch (error) {
+        console.log('Error in data response');
+      }
     }
 
     fetchData();
@@ -41,10 +49,10 @@ function App() {
       let item = cartItems.find((item) => item.title === obj.title);
       if (item) {
         setCartItems(prev => prev.filter(item => item.title !== obj.title));
-        axios.delete(`https://629f57ac8b939d3dc2959500.mockapi.io/cartItems/${item.id}`);
+        await axios.delete(`https://629f57ac8b939d3dc2959500.mockapi.io/cartItems/${item.id}`);
       } else {
-        const { data } = await axios.post('https://629f57ac8b939d3dc2959500.mockapi.io/cartItems', obj);
-        setCartItems((prev) => [...prev, data]);
+        setCartItems((prev) => [...prev, obj]);
+        await axios.post('https://629f57ac8b939d3dc2959500.mockapi.io/cartItems', obj);
       }
     } catch (error) {
       console.log("Error in add to cart");
@@ -57,22 +65,18 @@ function App() {
       let item = favoriteItems.find((favItem) => favItem.title === obj.title);
       if (item) {
         setFavoriteItems(prev => prev.filter(item => item.title !== obj.title)); // ( window.location.href !== 'http://localhost:3000/favorites' ) ?  : item.favorited = false
-        axios.delete(`https://629f57ac8b939d3dc2959500.mockapi.io/favorites/${item.id}`);
+        await axios.delete(`https://629f57ac8b939d3dc2959500.mockapi.io/favorites/${item.id}`);
       } else {
-        const { data } = await axios.post('https://629f57ac8b939d3dc2959500.mockapi.io/favorites', obj);
-        setFavoriteItems((prev) => [...prev, data]);
+        setFavoriteItems((prev) => [...prev, obj]);
+        await axios.post('https://629f57ac8b939d3dc2959500.mockapi.io/favorites', obj);
       }
     } catch (error) {
       console.log("Error in add to favorite");
     }
   };
 
-  const onCartOpened = () => {
-    setCartOpened(true);
-    axios.get('https://629f57ac8b939d3dc2959500.mockapi.io/cartItems')
-      .then(res => {
-        setCartItems(res.data);
-      });
+  const onCartOpened = (state) => {
+    setCartOpened(state);
   }
 
   const onRemoveFromCart = (id) => {
@@ -96,16 +100,20 @@ function App() {
         setCartOpened, setCartItems
       }}>
       <div className="wrapper clear">
-        {cartOpened && <Drawer
+        <Drawer
           items={cartItems}
           onRemove={onRemoveFromCart}
-        />}
-        <Header onClickCart={() => onCartOpened()} />
+          opened={cartOpened}
+          onOpen={() => onCartOpened(true)}
+          onClose={() => onCartOpened(false)}
+        />
+        <Header onClickCart={() => onCartOpened(true)} />
         <div className="content p-40">
           <Routes>
             <Route
               path="/"
               element={<Home
+                cartItemCheck={cartItemCheck}
                 searchValue={searchValue}
                 setSearchValue={setSearchValue}
                 onChangeSearchInput={onChangeSearchInput}
@@ -114,9 +122,15 @@ function App() {
             <Route
               path="/favorites"
               element={<Favorites
+                cartItemCheck={cartItemCheck}
                 searchValue={searchValue}
                 setSearchValue={setSearchValue}
                 onChangeSearchInput={onChangeSearchInput}
+              />}
+            />
+            <Route
+              path="/orders"
+              element={<Orders
               />}
             />
           </Routes>

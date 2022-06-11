@@ -111,7 +111,7 @@ function App() {
         <div className="content p-40">
           <Routes>
             <Route
-              path="/"
+              path="react-sneakers"
               element={<Home
                 cartItemCheck={cartItemCheck}
                 searchValue={searchValue}
@@ -120,7 +120,7 @@ function App() {
               />}
             />
             <Route
-              path="/favorites"
+              path="react-sneakers/favorites"
               element={<Favorites
                 cartItemCheck={cartItemCheck}
                 searchValue={searchValue}
@@ -129,7 +129,7 @@ function App() {
               />}
             />
             <Route
-              path="/orders"
+              path="react-sneakers/orders"
               element={<Orders
               />}
             />

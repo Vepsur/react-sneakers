@@ -1,7 +1,6 @@
 import React from "react";
 import axios from "axios";
 
-import AppContext from "../context";
 import Card from "../components/Card";
 
 function Orders() {

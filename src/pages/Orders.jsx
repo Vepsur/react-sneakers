@@ -5,6 +5,7 @@ import Card from "../components/Card";
 
 function Orders() {
   const [orders, setOrders] = React.useState([]);
+  const inOrder = true;
 
   React.useEffect(() => {
     (
@@ -24,10 +25,11 @@ function Orders() {
         <>
           <div className="order mb-30 mt-30" key={"order" + orderID}>
             <h2>Заказ #{order.id}</h2>
-            <div className="cardList">
+            <div className="orderCardList">
               {
                 order.items.map((item, index) => (
                   <Card
+                    inOrder={inOrder}
                     key={`order${orderID}_card${index}`}
                     {...item}
                   />
@@ -40,14 +42,14 @@ function Orders() {
   }
 
   return (
-    <div>
+    <>
       <div className="d-flex align-center justify-between mb-40">
         <h1 className="">Мои заказы</h1>
       </div>
       <div className="ordersList">
         {renderOrders()}
       </div>
-    </div>
+    </>
   )
 }
 

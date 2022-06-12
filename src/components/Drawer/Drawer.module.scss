@@ -9,11 +9,13 @@
   visibility: hidden;
   opacity: 0;
   transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+  overflow: hidden;
 }
 
 .overlayVisible {
   visibility: visible;
   opacity: 1;
+  overflow: hidden;
 
   .drawer {
     transform: translateX(0);
@@ -40,6 +42,10 @@
   flex-direction: column;
   transform: translateX(100%);
   transition: transform 0.5s ease-in-out;
+
+  @media (max-width: 560px) {
+    width: 100%;
+  }
 
   .emptyCart {
     width: 100%;
@@ -94,7 +100,7 @@
 
 .cartTotalBlock {
   ul {
-    margin-bottom: 40px !important;
+    margin-bottom: 20px !important;
   }
 
   li {
@@ -168,7 +174,12 @@
   overflow: hidden;
   margin-bottom: 20px;
 
+  @media (max-width: 440px) {
+    padding: 10px;
+  }
+
   .cartItemImg {
+    align-self: center;
     width: 70px;
     height: 70px;
     background-size: contain;
@@ -180,10 +191,18 @@
   p {
     font-size: 16px;
     margin: 0;
+
+    @media (max-width: 380px) {
+      font-size: 14px;
+    }
   }
 
   b {
     font-size: 14px;
+
+    @media (max-width: 380px) {
+      font-size: 12px;
+    }
   }
 
   .removeBtn {

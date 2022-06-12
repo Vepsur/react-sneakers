@@ -12,7 +12,7 @@ const Info = ({ onClose, title, description, image }) => {
         <button onClick={() => onClose(false)} className={styles.greenButton}>
           Вернуться назад<img
             className={styles.arrow}
-            src="/img/return_arrow.svg"
+            src="img/return_arrow.svg"
             alt="Arrow"
           />
         </button>

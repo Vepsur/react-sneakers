@@ -108,10 +108,10 @@ function App() {
           onClose={() => onCartOpened(false)}
         />
         <Header onClickCart={() => onCartOpened(true)} />
-        <div className="content p-40">
+        <div className="content">
           <Routes>
             <Route
-              path="react-sneakers"
+              path="react-sneakers/"
               element={<Home
                 cartItemCheck={cartItemCheck}
                 searchValue={searchValue}
@@ -120,7 +120,7 @@ function App() {
               />}
             />
             <Route
-              path="react-sneakers/favorites"
+              path="react-sneakers/favorites/"
               element={<Favorites
                 cartItemCheck={cartItemCheck}
                 searchValue={searchValue}
@@ -129,7 +129,7 @@ function App() {
               />}
             />
             <Route
-              path="react-sneakers/orders"
+              path="react-sneakers/orders/"
               element={<Orders
               />}
             />

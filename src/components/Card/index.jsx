@@ -10,56 +10,59 @@ export default function Card({
   title,
   price,
   cartItemCheck,
-  favoriteItemCheck
+  favoriteItemCheck,
+  inOrder
 }) {
   const { onAddToCart, onAddToFavorites, isLoading } = React.useContext(AppContext);
 
   return (
-    <div className={styles.card}>
-      {
-        isLoading
-          ? <ContentLoader
-            speed={2}
-            width={180}
-            height={220}
-            viewBox="0 0 150 180"
-            backgroundColor="#f3f3f3"
-            foregroundColor="#ecebeb"
-          >
-            <rect x="0" y="100" rx="5" ry="5" width="150" height="15" />
-            <rect x="0" y="120" rx="5" ry="5" width="93" height="15" />
-            <rect x="118" y="148" rx="10" ry="10" width="32" height="32" />
-            <rect x="0" y="155" rx="10" ry="10" width="80" height="25" />
-            <rect x="0" y="0" rx="5" ry="5" width="150" height="90" />
-          </ContentLoader>
-          : <>
-            {favoriteItemCheck &&
-              (<div className={styles.favorite}>
-                <img
-                  src={favoriteItemCheck(title) ? "/img/heart_checked.svg" : "/img/heart_unchecked.svg"}
-                  alt="Uliked"
-                  onClick={() => onAddToFavorites({ id, imageUrl, title, price })}
-                />
-              </div>)}
-            <img width={133} height={112} src={imageUrl} alt="Sneakers" />
-            <h5>{title}</h5>
-            <div className="d-flex justify-between align-center">
-              <div className="d-flex flex-column">
-                <span>Цена:</span>
-                <b>{price} руб.</b>
+    <div className='d-flex justify-center'>
+      <div className={inOrder ? styles.card + " mr-20" : styles.card}>
+        {
+          isLoading
+            ? <ContentLoader
+              speed={2}
+              width={180}
+              height={220}
+              viewBox="0 0 150 180"
+              backgroundColor="#f3f3f3"
+              foregroundColor="#ecebeb"
+            >
+              <rect x="0" y="100" rx="5" ry="5" width="150" height="15" />
+              <rect x="0" y="120" rx="5" ry="5" width="93" height="15" />
+              <rect x="118" y="148" rx="10" ry="10" width="32" height="32" />
+              <rect x="0" y="155" rx="10" ry="10" width="80" height="25" />
+              <rect x="0" y="0" rx="5" ry="5" width="150" height="90" />
+            </ContentLoader>
+            : <>
+              {favoriteItemCheck &&
+                (<div className={styles.favorite}>
+                  <img
+                    src={favoriteItemCheck(title) ? "img/heart_checked.svg" : "img/heart_unchecked.svg"}
+                    alt="Uliked"
+                    onClick={() => onAddToFavorites({ id, imageUrl, title, price })}
+                  />
+                </div>)}
+              <img width={133} height={112} src={imageUrl} alt="Sneakers" />
+              <h5>{title}</h5>
+              <div className="d-flex justify-between align-center">
+                <div className="d-flex flex-column">
+                  <span>Цена:</span>
+                  <b>{price} руб.</b>
+                </div>
+                {cartItemCheck &&
+                  (<img
+                    className={styles.plus}
+                    onClick={() => onAddToCart({ id, imageUrl, title, price })}
+                    width={32}
+                    height={32}
+                    src={cartItemCheck(title) ? "img/btn_checked.svg" : "img/btn_unchecked.svg"}
+                    alt="Plus"
+                  />)}
               </div>
-              {cartItemCheck &&
-                (<img
-                  className={styles.plus}
-                  onClick={() => onAddToCart({ id, imageUrl, title, price })}
-                  width={32}
-                  height={32}
-                  src={cartItemCheck(title) ? "/img/btn_checked.svg" : "/img/btn_unchecked.svg"}
-                  alt="Plus"
-                />)}
-            </div>
-          </>
-      }
+            </>
+        }
+      </div>
     </div>
   );
 }

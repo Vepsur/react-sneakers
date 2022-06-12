@@ -17,9 +17,7 @@ function Drawer({ opened, onClose, onRemove, items = [] }) {
   const onClickOrder = async (id) => {
     try {
       setIsLoading(true);
-      const { data } = await axios.post(`https://629f57ac8b939d3dc2959500.mockapi.io/orders`, {
-        items: cartItems
-      });
+      const { data } = await axios.post(`https://629f57ac8b939d3dc2959500.mockapi.io/orders`, {items: cartItems});
 
       setOrderId(data.id);
       setIsOrderComplete(true);
@@ -49,8 +47,8 @@ function Drawer({ opened, onClose, onRemove, items = [] }) {
         {(items.length > 0) ? (
           <>
             <div className={styles.items}>
-              {items.map((obj) => (
-                <div key={obj.id} className={`${styles.cartItem} d-flex align-center"`}>
+              {items.map((obj, index) => (
+                <div key={`cartItem${index}`} className={`${styles.cartItem} d-flex align-center"`}>
                   <div
                     style={{ backgroundImage: `url(${obj.imageUrl})` }}
                     className={styles.cartItemImg}>

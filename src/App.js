@@ -46,13 +46,16 @@ function App() {
 
   const onAddToCart = async (obj) => {
     try {
-      console.log(obj.id);
+      console.log(obj);
       let item = cartItems.find((item) => item.title === obj.title);
       if (item) {
         setCartItems(prev => prev.filter(item => item.title !== obj.title));
         await axios.delete(`https://629f57ac8b939d3dc2959500.mockapi.io/cartItems/${item.id}`);
       } else {
-        setCartItems((prev) => [...prev, obj]);
+        setCartItems((prev) => {
+          prev.length > 0 ? obj.id = prev.length + 1 : obj.id = 1;
+          return [...prev, obj]
+        });
         await axios.post('https://629f57ac8b939d3dc2959500.mockapi.io/cartItems', obj);
       }
     } catch (error) {
@@ -67,7 +70,10 @@ function App() {
         setFavoriteItems(prev => prev.filter(item => item.title !== obj.title)); // ( window.location.href !== 'http://localhost:3000/favorites' ) ?  : item.favorited = false
         await axios.delete(`https://629f57ac8b939d3dc2959500.mockapi.io/favorites/${item.id}`);
       } else {
-        setFavoriteItems((prev) => [...prev, obj]);
+        setFavoriteItems((prev) => {
+          prev.length > 0 ? obj.id = prev.length + 1 : obj.id = 1;
+          return [...prev, obj]
+        });
         await axios.post('https://629f57ac8b939d3dc2959500.mockapi.io/favorites', obj);
       }
     } catch (error) {

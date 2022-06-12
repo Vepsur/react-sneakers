@@ -23,7 +23,7 @@ function Home({
           inOrder={inOrder}
           cartItemCheck={cartItemCheck}
           favoriteItemCheck={favoriteItemCheck}
-          key={index}
+          key={`homeCard${index}`}
           {...item}
         />
       ))

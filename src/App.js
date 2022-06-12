@@ -46,6 +46,7 @@ function App() {
 
   const onAddToCart = async (obj) => {
     try {
+      console.log(obj.id);
       let item = cartItems.find((item) => item.title === obj.title);
       if (item) {
         setCartItems(prev => prev.filter(item => item.title !== obj.title));
@@ -57,7 +58,6 @@ function App() {
     } catch (error) {
       console.log("Error in add to cart");
     }
-
   };
 
   const onAddToFavorites = async (obj) => {
@@ -79,9 +79,15 @@ function App() {
     setCartOpened(state);
   }
 
-  const onRemoveFromCart = (id) => {
-    setCartItems(prev => prev.filter(item => item.id !== id));
-    axios.delete(`https://629f57ac8b939d3dc2959500.mockapi.io/cartItems/${id}`);
+  const onRemoveFromCart = async (obj) => {
+    try {
+      console.log(obj.id);
+      setCartItems(prev => prev.filter(item => item.title !== obj.title));
+      await axios.delete(`https://629f57ac8b939d3dc2959500.mockapi.io/cartItems/${obj.id}`);
+    } catch (error) {
+      console.log('Error on delete from cart');
+    }
+
   }
 
   const cartItemCheck = (title) => {

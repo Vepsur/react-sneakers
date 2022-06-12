@@ -1,5 +1,6 @@
 import React from "react";
 
+import Info from "../components/Info";
 import AppContext from "../context";
 import Card from "../components/Card";
 
@@ -9,7 +10,7 @@ function Favorites({
   setSearchValue,
   onChangeSearchInput
 }) {
-  const { favoriteItemCheck, favoriteItems, isLoading } = React.useContext(AppContext);
+  const { favoriteItemCheck, favoriteItems } = React.useContext(AppContext);
 
   const renderItems = () => {
     const filterItems = favoriteItems.filter(item =>
@@ -17,17 +18,22 @@ function Favorites({
     );
 
     return (
-      isLoading ? [...Array(4)] : filterItems).map((item, index) => (
+      filterItems.map((item, index) => (
         <Card
           cartItemCheck={cartItemCheck}
-          key={index}
+          key={`fav${index}`}
           favoriteItemCheck={favoriteItemCheck}
           {...item}
         />
-      ))
+      )))
   }
 
   return (
+    (favoriteItems.length < 1) ? (
+      <Info 
+      favoritePage={true}
+      />
+    ) : (
     <div>
       <div className="contentTop">
         <h1 className="">Избранное</h1>
@@ -48,7 +54,7 @@ function Favorites({
         {renderItems()}
       </div>
     </div>
-  )
+  ))
 }
 
 export default Favorites;

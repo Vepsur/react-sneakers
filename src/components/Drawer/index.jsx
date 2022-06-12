@@ -1,5 +1,5 @@
 import React from "react";
-import Info from "../Info";
+import Info from "./Info";
 import axios from "axios";
 
 import { useCart } from '../../hooks/useCart'
@@ -60,7 +60,7 @@ function Drawer({ opened, onClose, onRemove, items = [] }) {
                     <b>{obj.price} руб.</b>
                   </div>
                   <img
-                    onClick={() => onRemove(obj.id)}
+                    onClick={() => onRemove(obj)}
                     className={styles.removeBtn}
                     src="img/remove.svg"
                     alt="Remove"
@@ -90,7 +90,10 @@ function Drawer({ opened, onClose, onRemove, items = [] }) {
           <Info
             onClose={onClose}
             title={isOrderComplete ? "Заказ оформлен" : "Корзина пуста"}
-            description={isOrderComplete ? `Ваш заказ #${orderId} скоро будет передан курьерской доставке` : "Добавьте хотя бы одну пару кроссовок, чтобы сделать заказ."}
+            description={isOrderComplete ? `Ваш заказ #${orderId}. Cкоро он будет передан курьерской доставке. 
+            Не беспокойтесь, Ваш адрес мы вычислим по IP :)` :
+              "Добавьте хотя бы одну пару кроссовок, чтобы сделать заказ."
+            }
             image={isOrderComplete ? "img/complete_order.png" : "img/empty_cart.png"}
           />
         )}

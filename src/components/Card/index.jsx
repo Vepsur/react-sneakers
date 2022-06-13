@@ -1,8 +1,8 @@
 import React from 'react';
-import ContentLoader from "react-content-loader"
+import ContentLoader from "react-content-loader";
 
 import AppContext from '../../context';
-import styles from './Card.module.scss'
+import styles from './Card.module.scss';
 
 export default function Card({
   id,
@@ -11,13 +11,13 @@ export default function Card({
   price,
   cartItemCheck,
   favoriteItemCheck,
-  isFlexDisplay
+  flexDisplay
 }) {
   const { onAddToCart, onAddToFavorites, isLoading } = React.useContext(AppContext);
 
   return (
     <div className='d-flex justify-center'>
-      <div className={isFlexDisplay ? styles.card + " mr-20" : styles.card}>
+      <div className={flexDisplay ? styles.card + " mr-20" : styles.card}>
         {
           isLoading
             ? <ContentLoader
@@ -65,4 +65,4 @@ export default function Card({
       </div>
     </div>
   );
-}
+};

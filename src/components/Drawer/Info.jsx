@@ -1,6 +1,6 @@
-import React from 'react'
+import React from 'react';
 
-import styles from './Drawer.module.scss'
+import styles from './Drawer.module.scss';
 
 const Info = ({ onClose, title, description, image }) => {
   return (
@@ -19,6 +19,6 @@ const Info = ({ onClose, title, description, image }) => {
       </div>
     </>
   )
-}
+};
 
 export default Info;

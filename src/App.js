@@ -33,7 +33,7 @@ function App() {
         setFavoriteItems(favoriteItemResp.data);
         setItems(itemsResp.data);
       } catch (error) {
-        alert('Error in data response');
+        alert('Произошла ошибка при загрузке данных. Пожалуйста, повторите позже.');
         console.log('Error in data response');
       }
     }
@@ -43,7 +43,7 @@ function App() {
 
   const onChangeSearchInput = (event) => {
     setSearchValue(event.target.value);
-  }
+  };
 
   const onAddToCart = async (obj) => {
     try {
@@ -59,7 +59,7 @@ function App() {
         await axios.post('https://629f57ac8b939d3dc2959500.mockapi.io/cartItems', obj);
       }
     } catch (error) {
-      alert("Error in add to cart");
+      alert("Произошла ошибка при добавлении товара в корзину. Пожалуйста, повторите позже.");
       console.log("Error in add to cart");
     }
   };
@@ -68,7 +68,7 @@ function App() {
     try {
       let item = favoriteItems.find((favItem) => favItem.title === obj.title);
       if (item) {
-        setFavoriteItems(prev => prev.filter(item => item.title !== obj.title)); // ( window.location.href !== 'http://localhost:3000/favorites' ) ?  : item.favorited = false
+        setFavoriteItems(prev => prev.filter(item => item.title !== obj.title));
         await axios.delete(`https://629f57ac8b939d3dc2959500.mockapi.io/favorites/${item.id}`);
       } else {
         setFavoriteItems((prev) => {
@@ -78,33 +78,33 @@ function App() {
         await axios.post('https://629f57ac8b939d3dc2959500.mockapi.io/favorites', obj);
       }
     } catch (error) {
-      alert("Error in add to favorite");
+      alert("Произошла ошибка при добавлении товара в избранное. Пожалуйста, повторите позже.");
       console.log("Error in add to favorite");
     }
   };
 
   const onCartOpened = (state) => {
     setCartOpened(state);
-  }
+  };
 
   const onRemoveFromCart = async (obj) => {
     try {
       setCartItems(prev => prev.filter(item => item.title !== obj.title));
       await axios.delete(`https://629f57ac8b939d3dc2959500.mockapi.io/cartItems/${obj.id}`);
     } catch (error) {
-      alert('Error on delete from cart');
+      alert('Произошла ошибка при удалении товара из корзины. Пожалуйста, повторите позже.');
       console.log('Error on delete from cart');
     }
 
-  }
+  };
 
   const cartItemCheck = (title) => {
     return cartItems.some(cartItem => cartItem.title === title);
-  }
+  };
 
   const favoriteItemCheck = (title) => {
     return favoriteItems.some(favItem => favItem.title === title);
-  }
+  };
 
   return (
     <AppContext.Provider
@@ -152,7 +152,7 @@ function App() {
       </div>
     </AppContext.Provider>
   )
-}
+};
 
 export default App;
 

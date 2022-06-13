@@ -2,9 +2,9 @@ import React from "react";
 import Info from "./Info";
 import axios from "axios";
 
-import { useCart } from '../../hooks/useCart'
+import { useCart } from '../../hooks/useCart';
 
-import styles from './Drawer.module.scss'
+import styles from './Drawer.module.scss';
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -28,14 +28,14 @@ function Drawer({ opened, onClose, onRemove, items = [] }) {
         const item = cartItems[i];
         await axios.delete(`https://629f57ac8b939d3dc2959500.mockapi.io/cartItems/${item.id}`);
         await delay(500);
-      }
+      };
 
     } catch (error) {
-      alert('Error in creating order');
+      alert('Произошла ошибка создании заказа. Пожалуйста, повторите позже.');
       console.log('Error in creating order');
-    }
+    };
     setIsLoading(false);
-  }
+  };
 
   return (
     <div className={`${styles.overlay} ${opened ? styles.overlayVisible : ''}`}>
@@ -100,6 +100,6 @@ function Drawer({ opened, onClose, onRemove, items = [] }) {
       </div>
     </div>
   )
-}
+};
 
 export default Drawer;

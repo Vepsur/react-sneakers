@@ -7,20 +7,21 @@ import Card from "../components/Card";
 
 function Orders() {
   const [orders, setOrders] = React.useState([]);
-  const inOrder = true;
-  const [isOrdersLoading, setIsLoading] = React.useState(true);
+  const flexDisplay = true;
+  const [isOrdersLoading, setIsOrdersLoading] = React.useState(true);
 
   React.useEffect(() => {
     (
       async () => {
         try {
-          setIsLoading(true);
+          setIsOrdersLoading(true);
           const ordersResp = await axios.get('https://629f57ac8b939d3dc2959500.mockapi.io/orders');
           setOrders(ordersResp.data);
         } catch (error) {
+          console.log('Произошла ошибка при загрузке страницы заказов. Пожалуйста, повторите позже.');
           console.log('Eror on load orders page');
-        }
-        setIsLoading(false);
+        };
+        setIsOrdersLoading(false);
       })();
   }, []);
 
@@ -37,7 +38,7 @@ function Orders() {
   const renderOrders = () => {
     return (
       (orders.length < 1) ? (
-        <Info />
+        <Info isOrdersLoading={isOrdersLoading}/>
       ) : (
         <>
           <div>
@@ -45,28 +46,29 @@ function Orders() {
               <h1 className="">Мои заказы</h1>
             </div>
           </div>
-          {orders.map((order, orderID) => (
-            <div className="ordersList"  key={`order${orderID}`}>
-              <div className="order mb-30 mt-30">
-                <div className="d-flex align-center">
-                  <h2 className="mr-20">{isOrdersLoading ? `Заказ ##` : `Заказ #${order.id}`}</h2>
-                  <button onClick={() => onCancelOrder(order.id)} className="greenButton redBtn">Отменить</button>
-                </div>
-                <div className="orderCardList">
-                  {
-                    order.items.map((item, index) => (
-                      <Card
-                        isOrdersLoading={isOrdersLoading}
-                        inOrder={inOrder}
-                        key={`order${orderID}_card${index}`}
-                        {...item}
-                      />
-                    ))
-                  }
+          {
+            orders.map((order, orderID) => (
+              <div className="ordersList" key={`order${orderID}`}>
+                <div className="order mb-30 mt-30">
+                  <div className="d-flex align-center">
+                    <h2 className="mr-20">{isOrdersLoading ? `Заказ ##` : `Заказ #${order.id}`}</h2>
+                    <button onClick={() => onCancelOrder(order.id)} className="greenButton redBtn">Отменить</button>
+                  </div>
+                  <div className="orderCardList">
+                    {
+                      order.items.map((item, index) => (
+                        <Card
+                          flexDisplay={flexDisplay}
+                          key={`order${orderID}_card${index}`}
+                          {...item}
+                        />
+                      ))
+                    }
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          }
         </>
       ))
   };
@@ -76,6 +78,6 @@ function Orders() {
       {renderOrders()}
     </>
   )
-}
+};
 
 export default Orders;

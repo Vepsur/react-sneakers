@@ -28,35 +28,33 @@ function Favorites({
           {...item}
         />
       )))
-  }
+  };
 
   return (
-        (favoriteItems.length < 1) ? (
-          <Info
-            favoritePage={true}
-          />
-        ) : (
-          <div>
-            <div className="contentTop">
-              <h1 className="">Избранное</h1>
-              <div className="search-block d-flex">
-                <img src="img/search.svg" alt="Search" />
-                <input onChange={onChangeSearchInput} value={searchValue} placeholder="Поиск..." />
-                {searchValue &&
-                  <img
-                    onClick={() => setSearchValue('')}
-                    className="clearBtn cu-p"
-                    src="img/remove.svg"
-                    alt="Clear"
-                  />
-                }
-              </div>
-            </div>
-            <div className="orderCardList">
-              {renderItems()}
-            </div>
+    (favoriteItems.length < 1) ? (
+      <Info favoritePage={true} />
+    ) : (
+      <div>
+        <div className="contentTop">
+          <h1 className="">Избранное</h1>
+          <div className="search-block d-flex">
+            <img src="img/search.svg" alt="Search" />
+            <input onChange={onChangeSearchInput} value={searchValue} placeholder="Поиск..." />
+            {searchValue &&
+              <img
+                onClick={() => setSearchValue('')}
+                className="clearBtn cu-p"
+                src="img/remove.svg"
+                alt="Clear"
+              />
+            }
           </div>
-        ))
-}
+        </div>
+        <div className="orderCardList">
+          {renderItems()}
+        </div>
+      </div>
+    ))
+};
 
 export default Favorites;

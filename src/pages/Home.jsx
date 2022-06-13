@@ -27,7 +27,7 @@ function Home({
           {...item}
         />
       ))
-  }
+  };
 
   return (
     <div>
@@ -51,6 +51,6 @@ function Home({
       </div>
     </div>
   )
-}
+};
 
 export default Home;

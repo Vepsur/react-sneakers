@@ -1,22 +1,21 @@
-import React from 'react'
-import ContentLoader from "react-content-loader"
-import { Link } from 'react-router-dom'
+import React from 'react';
+import ContentLoader from "react-content-loader";
+import { Link } from 'react-router-dom';
 
-import AppContext from "../context";;
+import AppContext from "../context";
 
 function random(min, max) {
   let num = 0;
   num = +(min + (max - min) * Math.random()).toFixed(0);
   return num;
-}
+};
 
-const Info = ({ favoritePage }) => {
+const Info = ({ favoritePage, isOrdersLoading }) => {
   const { isLoading } = React.useContext(AppContext);
 
   return (
-
     <div className='orders'>
-      {isLoading ? (
+      {(isLoading || isOrdersLoading) ? (
         <ContentLoader
           viewBox="0 0 400 160"
           height={160}
@@ -51,6 +50,6 @@ const Info = ({ favoritePage }) => {
       )}
     </div>
   )
-}
+};
 
 export default Info;

@@ -17,7 +17,7 @@ function Header(props) {
         </div>
       </Link>
       <ul className="d-flex">
-        <li className={(totalPrice > 0) ? "cartBlock greenBackGround" : "cartBlock" } onClick={props.onClickCart}>
+        <li className={(totalPrice > 0) ? "cartBlock greenBackGround" : "cartBlock"} onClick={props.onClickCart}>
           <span>
             {totalPrice} руб.
           </span>
@@ -41,6 +41,6 @@ function Header(props) {
       </ul>
     </header>
   )
-}
+};
 
 export default Header;

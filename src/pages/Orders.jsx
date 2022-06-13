@@ -27,12 +27,14 @@ function Orders() {
 
   const onCancelOrder = async (id) => {
     try {
+      setIsOrdersLoading(true);
       setOrders(prev => prev.filter(order => order.id !== id));
       await axios.delete(`https://629f57ac8b939d3dc2959500.mockapi.io/orders/${id}`);
     } catch (error) {
       alert('Произошла ошибка при отмене заказа. Пожалуйста, повторите позже.')
       console.log("Error in cancel order operation");
-    }
+    };
+    setIsOrdersLoading(false);
   };
 
   const renderOrders = () => {

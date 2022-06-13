@@ -36,7 +36,7 @@ const Info = ({ favoritePage, isOrdersLoading }) => {
               <h2>{favoritePage ? "Избранного нет" : "У вас нет заказов"}</h2>
             </li>
             <li>
-              <p>{favoritePage ? "Вы ничего не добавили" : "Закажите свои любимые кроссовки"}</p>
+              <p>{favoritePage ? "Вы ничего не добавили" : "Закажите свои любимые кроссовки в нашем магазине"}</p>
             </li>
             <li>
               <Link to={"/react-sneakers/"}>

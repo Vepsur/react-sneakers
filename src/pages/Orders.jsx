@@ -18,7 +18,7 @@ function Orders() {
           const ordersResp = await axios.get('https://629f57ac8b939d3dc2959500.mockapi.io/orders');
           setOrders(ordersResp.data);
         } catch (error) {
-          console.log('Произошла ошибка при загрузке страницы заказов. Пожалуйста, повторите позже.');
+          console.log('Произошла ошибка при загрузке страницы заказов. Пожалуйста, обновите страницу или повторите позже.');
           console.log('Eror on load orders page');
         };
         setIsOrdersLoading(false);
@@ -31,7 +31,7 @@ function Orders() {
       setOrders(prev => prev.filter(order => order.id !== id));
       await axios.delete(`https://629f57ac8b939d3dc2959500.mockapi.io/orders/${id}`);
     } catch (error) {
-      alert('Произошла ошибка при отмене заказа. Пожалуйста, повторите позже.')
+      alert('Произошла ошибка при отмене заказа. Пожалуйста, обновите страницу или повторите позже.')
       console.log("Error in cancel order operation");
     };
     setIsOrdersLoading(false);
@@ -60,6 +60,7 @@ function Orders() {
                     {
                       order.items.map((item, index) => (
                         <Card
+                          inOrder={true}
                           flexDisplay={flexDisplay}
                           key={`order${orderID}_card${index}`}
                           {...item}

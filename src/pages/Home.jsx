@@ -2,9 +2,9 @@ import React from "react";
 
 import AppContext from "../context";
 import Card from "../components/Card";
+import { Search } from "../components/Search"
 
 function Home({
-  cartItemCheck,
   searchValue,
   setSearchValue,
   onChangeSearchInput
@@ -21,7 +21,6 @@ function Home({
       isLoading ? [...Array(12)] : filterItems).map((item, index) => (
         <Card
           inOrder={inOrder}
-          cartItemCheck={cartItemCheck}
           favoriteItemCheck={favoriteItemCheck}
           key={`homeCard${index}`}
           {...item}
@@ -32,19 +31,12 @@ function Home({
   return (
     <div>
       <div className="contentTop">
-        <h1 className="">Все кроссовки</h1>
-        <div className="search-block d-flex">
-          <img src="img/search.svg" alt="Search" />
-          <input onChange={onChangeSearchInput} value={searchValue} placeholder="Поиск..." />
-          {searchValue &&
-            <img
-              onClick={() => setSearchValue('')}
-              className="clearBtn cu-p"
-              src="img/remove.svg"
-              alt="Clear"
-            />
-          }
-        </div>
+        <h1>Все кроссовки</h1>
+        <Search
+          searchValue={searchValue}
+          onChangeSearchInput={onChangeSearchInput}
+          setSearchValue={setSearchValue}
+        />
       </div>
       <div className="cardList">
         {renderItems()}

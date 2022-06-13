@@ -1,9 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import AppContext from '../context';
 import { useCart } from '../hooks/useCart';
 
-function Header(props) {
+function Header() {
+  const {setCartOpened} = React.useContext(AppContext);
   const { totalPrice } = useCart();
 
   return (
@@ -17,7 +19,7 @@ function Header(props) {
         </div>
       </Link>
       <ul className="d-flex">
-        <li className={(totalPrice > 0) ? "cartBlock greenBackGround" : "cartBlock"} onClick={props.onClickCart}>
+        <li className={(totalPrice > 0) ? "cartBlock greenBackGround" : "cartBlock"} onClick={() => setCartOpened(true)}>
           <span>
             {totalPrice} руб.
           </span>

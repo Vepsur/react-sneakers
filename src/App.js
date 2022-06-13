@@ -12,8 +12,8 @@ import AppContext from "./context";
 function App() {
   const [items, setItems] = React.useState([]);
   const [cartItems, setCartItems] = React.useState([]);
-  const [cartOpened, setCartOpened] = React.useState(false);
   const [favoriteItems, setFavoriteItems] = React.useState([]);
+  const [cartOpened, setCartOpened] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(true);
 
@@ -28,12 +28,12 @@ function App() {
         ]);
 
         setIsLoading(false);
-  
+        window.scrollTo(0, 0);
         setCartItems(cartItemsResp.data);
         setFavoriteItems(favoriteItemResp.data);
         setItems(itemsResp.data);
       } catch (error) {
-        alert('Произошла ошибка при загрузке данных. Пожалуйста, повторите позже.');
+        alert('Произошла ошибка при загрузке данных. Пожалуйста, обновите страницу или повторите позже.');
         console.log('Error in data response');
       }
     }
@@ -59,7 +59,7 @@ function App() {
         await axios.post('https://629f57ac8b939d3dc2959500.mockapi.io/cartItems', obj);
       }
     } catch (error) {
-      alert("Произошла ошибка при добавлении товара в корзину. Пожалуйста, повторите позже.");
+      alert("Произошла ошибка при добавлении товара в корзину. Пожалуйста, обновите страницу или повторите позже.");
       console.log("Error in add to cart");
     }
   };
@@ -78,13 +78,9 @@ function App() {
         await axios.post('https://629f57ac8b939d3dc2959500.mockapi.io/favorites', obj);
       }
     } catch (error) {
-      alert("Произошла ошибка при добавлении товара в избранное. Пожалуйста, повторите позже.");
+      alert("Произошла ошибка при добавлении товара в избранное. Пожалуйста, обновите страницу или повторите позже.");
       console.log("Error in add to favorite");
     }
-  };
-
-  const onCartOpened = (state) => {
-    setCartOpened(state);
   };
 
   const onRemoveFromCart = async (obj) => {
@@ -92,7 +88,7 @@ function App() {
       setCartItems(prev => prev.filter(item => item.title !== obj.title));
       await axios.delete(`https://629f57ac8b939d3dc2959500.mockapi.io/cartItems/${obj.id}`);
     } catch (error) {
-      alert('Произошла ошибка при удалении товара из корзины. Пожалуйста, повторите позже.');
+      alert('Произошла ошибка при удалении товара из корзины. Пожалуйста, обновите страницу или повторите позже.');
       console.log('Error on delete from cart');
     }
 
@@ -110,24 +106,21 @@ function App() {
     <AppContext.Provider
       value={{
         items, cartItems, favoriteItems, isLoading,
-        cartItemCheck, favoriteItemCheck, onAddToCart, onAddToFavorites,
+        cartItemCheck, favoriteItemCheck, 
+        onAddToCart, onAddToFavorites,
         setCartOpened, setCartItems
       }}>
       <div className="wrapper clear">
         <Drawer
-          items={cartItems}
           onRemove={onRemoveFromCart}
           opened={cartOpened}
-          onOpen={() => onCartOpened(true)}
-          onClose={() => onCartOpened(false)}
         />
-        <Header onClickCart={() => onCartOpened(true)} />
+        <Header />
         <div className="content">
           <Routes>
             <Route
               path="react-sneakers/"
               element={<Home
-                cartItemCheck={cartItemCheck}
                 searchValue={searchValue}
                 setSearchValue={setSearchValue}
                 onChangeSearchInput={onChangeSearchInput}
@@ -136,7 +129,6 @@ function App() {
             <Route
               path="react-sneakers/favorites/"
               element={<Favorites
-                cartItemCheck={cartItemCheck}
                 searchValue={searchValue}
                 setSearchValue={setSearchValue}
                 onChangeSearchInput={onChangeSearchInput}
@@ -144,8 +136,7 @@ function App() {
             />
             <Route
               path="react-sneakers/orders/"
-              element={<Orders
-              />}
+              element={<Orders />}
             />
           </Routes>
         </div>

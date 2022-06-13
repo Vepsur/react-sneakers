@@ -5,10 +5,12 @@ import axios from "axios";
 import { useCart } from '../../hooks/useCart';
 
 import styles from './Drawer.module.scss';
+import AppContext from "../../context";
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-function Drawer({ opened, onClose, onRemove, items = [] }) {
+function Drawer({ opened, onRemove }) {
+  const { setCartOpened } = React.useContext(AppContext);
   const { cartItems, setCartItems, totalPrice } = useCart();
   const [isOrderComplete, setIsOrderComplete] = React.useState(false);
   const [orderId, setOrderId] = React.useState(null);
@@ -17,7 +19,7 @@ function Drawer({ opened, onClose, onRemove, items = [] }) {
   const onClickOrder = async (id) => {
     try {
       setIsLoading(true);
-      const { data } = await axios.post(`https://629f57ac8b939d3dc2959500.mockapi.io/orders`, { items: cartItems });
+      const { data } = await axios.post(`https://629f57ac8b939d3dc2959500.mockapi.io/orders`, { "items": cartItems });
 
       setOrderId(data.id);
       setIsOrderComplete(true);
@@ -29,9 +31,8 @@ function Drawer({ opened, onClose, onRemove, items = [] }) {
         await axios.delete(`https://629f57ac8b939d3dc2959500.mockapi.io/cartItems/${item.id}`);
         await delay(500);
       };
-
     } catch (error) {
-      alert('Произошла ошибка создании заказа. Пожалуйста, повторите позже.');
+      alert('Произошла ошибка создании заказа. Пожалуйста, обновите страницу или повторите позже.');
       console.log('Error in creating order');
     };
     setIsLoading(false);
@@ -39,16 +40,16 @@ function Drawer({ opened, onClose, onRemove, items = [] }) {
 
   return (
     <div className={`${styles.overlay} ${opened ? styles.overlayVisible : ''}`}>
-      <div onClick={() => onClose()} className={styles.shading}></div>
+      <div onClick={() => setCartOpened(false)} className={styles.shading}></div>
       <div className={styles.drawer}>
         <h2 className="mb-30 d-flex justify-between">
           Корзина
-          <img onClick={() => onClose()} className={styles.removeBtn} src="img/remove.svg" alt="Close" />
+          <img onClick={() => setCartOpened(false)} className={styles.removeBtn} src="img/remove.svg" alt="Close" />
         </h2>
-        {(items.length > 0) ? (
+        {(cartItems.length > 0) ? (
           <>
             <div className={styles.items}>
-              {items.map((obj, index) => (
+              {cartItems.map((obj, index) => (
                 <div key={`cartItem${index}`} className={`${styles.cartItem} d-flex align-center"`}>
                   <div
                     style={{ backgroundImage: `url(${obj.imageUrl})` }}
@@ -87,7 +88,6 @@ function Drawer({ opened, onClose, onRemove, items = [] }) {
           </>
         ) : (
           <Info
-            onClose={onClose}
             title={isOrderComplete ? `Заказ #${orderId} оформлен` : "Корзина пуста"}
             description={
               isOrderComplete ?

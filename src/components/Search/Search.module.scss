@@ -1,0 +1,61 @@
+.searchBlock {
+  position: relative;
+  display: flex;
+
+  .clearBtn {
+    position: absolute;
+    display: flex;
+    cursor: pointer;
+    right: 4px;
+    padding-right: 5px;
+    align-self: center;
+    height: 28px;
+
+    @media (max-width: 540px) {
+      right: 0;
+      height: 22px;
+    }
+  }
+
+  img {
+    position: absolute;
+    margin: auto;
+    justify-self: center;
+    align-self: center;
+    padding-left: 10px;
+  }
+
+  input {
+    border: 1px solid #F3F3F3;
+    border-radius: 12px;
+    padding: 10px;
+    padding-right: 35px;
+    padding-left: 32px;
+    font-size: 16px;
+    width: 200px;
+
+    &:focus {
+      border: 1px solid #cecece;
+    }
+
+    @media (max-width: 650px) {
+      width: 150px;
+      font-size: 14px;
+    }
+
+    @media (max-width: 540px) {
+      padding: 6px;
+      padding-right: 27px;
+      padding-left: 32px;
+    }
+
+    @media (max-width: 490px) {
+      width: 120px;
+    }
+
+    @media (max-width: 420px) {
+      width: 155px;
+    }
+  }
+
+}

@@ -9,11 +9,10 @@ export default function Card({
   imageUrl,
   title,
   price,
-  cartItemCheck,
-  favoriteItemCheck,
+  inOrder,
   flexDisplay
 }) {
-  const { onAddToCart, onAddToFavorites, isLoading } = React.useContext(AppContext);
+  const { cartItemCheck, favoriteItemCheck, onAddToCart, onAddToFavorites, isLoading } = React.useContext(AppContext);
 
   return (
     <div className='d-flex justify-center'>
@@ -35,7 +34,7 @@ export default function Card({
               <rect x="0" y="0" rx="5" ry="5" width="150" height="90" />
             </ContentLoader>
             : <>
-              {favoriteItemCheck &&
+              {!inOrder && favoriteItemCheck &&
                 (<div className={styles.favorite}>
                   <img
                     src={favoriteItemCheck(title) ? "img/heart_checked.svg" : "img/heart_unchecked.svg"}
@@ -50,7 +49,7 @@ export default function Card({
                   <span>Цена:</span>
                   <b>{price} руб.</b>
                 </div>
-                {cartItemCheck &&
+                {!inOrder && cartItemCheck &&
                   (<img
                     className={styles.plus}
                     onClick={() => onAddToCart({ id, imageUrl, title, price })}

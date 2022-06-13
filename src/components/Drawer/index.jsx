@@ -17,7 +17,7 @@ function Drawer({ opened, onClose, onRemove, items = [] }) {
   const onClickOrder = async (id) => {
     try {
       setIsLoading(true);
-      const { data } = await axios.post(`https://629f57ac8b939d3dc2959500.mockapi.io/orders`, {items: cartItems});
+      const { data } = await axios.post(`https://629f57ac8b939d3dc2959500.mockapi.io/orders`, { items: cartItems });
 
       setOrderId(data.id);
       setIsOrderComplete(true);
@@ -31,6 +31,7 @@ function Drawer({ opened, onClose, onRemove, items = [] }) {
       }
 
     } catch (error) {
+      alert('Error in creating order');
       console.log('Error in creating order');
     }
     setIsLoading(false);
@@ -87,10 +88,11 @@ function Drawer({ opened, onClose, onRemove, items = [] }) {
         ) : (
           <Info
             onClose={onClose}
-            title={isOrderComplete ? "Заказ оформлен" : "Корзина пуста"}
-            description={isOrderComplete ? `Ваш заказ #${orderId}. Cкоро он будет передан курьерской доставке. 
-            Не беспокойтесь, Ваш адрес мы вычислим по IP :)` :
-              "Добавьте хотя бы одну пару кроссовок, чтобы сделать заказ."
+            title={isOrderComplete ? `Заказ #${orderId} оформлен` : "Корзина пуста"}
+            description={
+              isOrderComplete ?
+                `Cкоро он будет передан курьерской доставке. Не беспокойтесь, Ваш адрес мы вычислим по IP :)` :
+                "Добавьте хотя бы одну пару кроссовок, чтобы сделать заказ."
             }
             image={isOrderComplete ? "img/complete_order.png" : "img/empty_cart.png"}
           />

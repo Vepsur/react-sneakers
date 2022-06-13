@@ -196,7 +196,6 @@ header {
     flex-wrap: wrap;
     width: 100%;
     height: 100%;
-
   }
 
   h1 {
@@ -325,22 +324,11 @@ header {
   }
 }
 
-.redButton {
+.redBtn {
   width: 90px;
   height: 25px;
   background: #de41418d;
   border-radius: 10px;
-  border: none;
-  color: white;
-  font-size: 16px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.2s ease-in-out;
-
-  &:disabled {
-    background-color: #bebebe !important;
-    cursor: default;
-  }
 
   &:hover {
     background: lighten($color: #de4141, $amount: 5%);

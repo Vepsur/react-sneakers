@@ -26,8 +26,8 @@ function Orders() {
 
   const onCancelOrder = async (id) => {
     try {
-        setOrders(prev => prev.filter(order => order.id !== id));
-        await axios.delete(`https://629f57ac8b939d3dc2959500.mockapi.io/orders/${id}`);
+      setOrders(prev => prev.filter(order => order.id !== id));
+      await axios.delete(`https://629f57ac8b939d3dc2959500.mockapi.io/orders/${id}`);
     } catch (error) {
       alert('Произошла ошибка при отмене заказа. Пожалуйста, повторите позже.')
       console.log("Error in cancel order operation");
@@ -39,16 +39,18 @@ function Orders() {
       (orders.length < 1) ? (
         <Info />
       ) : (
-        orders.map((order, orderID) => (
-          <div key={`order${orderID}`}>
+        <>
+          <div>
             <div className="d-flex align-center justify-between mb-40">
               <h1 className="">Мои заказы</h1>
             </div>
-            <div className="ordersList">
+          </div>
+          {orders.map((order, orderID) => (
+            <div className="ordersList"  key={`order${orderID}`}>
               <div className="order mb-30 mt-30">
                 <div className="d-flex align-center">
                   <h2 className="mr-20">{isOrdersLoading ? `Заказ ##` : `Заказ #${order.id}`}</h2>
-                  <button onClick={() => onCancelOrder(order.id)} className="redButton">Отменить</button>
+                  <button onClick={() => onCancelOrder(order.id)} className="greenButton redBtn">Отменить</button>
                 </div>
                 <div className="orderCardList">
                   {
@@ -64,9 +66,10 @@ function Orders() {
                 </div>
               </div>
             </div>
-          </div>
-        ))))
-  }
+          ))}
+        </>
+      ))
+  };
 
   return (
     <>

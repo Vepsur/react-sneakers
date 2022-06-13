@@ -11,16 +11,15 @@ export default function Card({
   price,
   cartItemCheck,
   favoriteItemCheck,
-  inOrder,
-  isOrdersLoading
+  isFlexDisplay
 }) {
   const { onAddToCart, onAddToFavorites, isLoading } = React.useContext(AppContext);
 
   return (
     <div className='d-flex justify-center'>
-      <div className={inOrder ? styles.card + " mr-20" : styles.card}>
+      <div className={isFlexDisplay ? styles.card + " mr-20" : styles.card}>
         {
-          isLoading || isOrdersLoading
+          isLoading
             ? <ContentLoader
               speed={2}
               width={180}

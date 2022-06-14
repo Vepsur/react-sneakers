@@ -1,16 +1,18 @@
 import React from "react";
 import Info from "./Info";
 import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
 
 import { useCart } from '../../hooks/useCart';
+import { setCartOpened } from "../../redux/slices/cartSlice";
 
 import styles from './Drawer.module.scss';
-import AppContext from "../../context";
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-function Drawer({ opened, onRemove }) {
-  const { setCartOpened } = React.useContext(AppContext);
+const Drawer = ({ onRemove }) => {
+  const dispatch = useDispatch();
+  const cartOpened = useSelector((state) => state.cart.value);
   const { cartItems, setCartItems, totalPrice } = useCart();
   const [isOrderComplete, setIsOrderComplete] = React.useState(false);
   const [orderId, setOrderId] = React.useState(null);
@@ -39,12 +41,12 @@ function Drawer({ opened, onRemove }) {
   };
 
   return (
-    <div className={`${styles.overlay} ${opened ? styles.overlayVisible : ''}`}>
-      <div onClick={() => setCartOpened(false)} className={styles.shading}></div>
+    <div className={`${styles.overlay} ${cartOpened ? styles.overlayVisible : ''}`}>
+      <div onClick={() => dispatch(setCartOpened(false))} className={styles.shading}></div>
       <div className={styles.drawer}>
         <h2 className="mb-30 d-flex justify-between">
           Корзина
-          <img onClick={() => setCartOpened(false)} className={styles.removeBtn} src="img/remove.svg" alt="Close" />
+          <img onClick={() => dispatch(setCartOpened(false))} className={styles.removeBtn} src="img/remove.svg" alt="Close" />
         </h2>
         {(cartItems.length > 0) ? (
           <>

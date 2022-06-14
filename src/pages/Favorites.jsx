@@ -1,15 +1,14 @@
 import React from "react";
+import { useSelector, useDispatch } from 'react-redux'
 
 import Info from "../components/Info";
 import AppContext from "../context";
 import Card from "../components/Card";
 import { Search } from "../components/Search"
 
-function Favorites({
-  searchValue,
-  setSearchValue,
-  onChangeSearchInput
-}) {
+function Favorites() {
+  const dispatch = useDispatch();
+  const searchValue = useSelector((state) => state.search.value);
   const { cartItemCheck, favoriteItemCheck, favoriteItems } = React.useContext(AppContext);
   const isFlexDisplay = true;
 
@@ -37,11 +36,7 @@ function Favorites({
       <div>
         <div className="contentTop">
           <h1 className="">Избранное</h1>
-          <Search
-            searchValue={searchValue}
-            onChangeSearchInput={onChangeSearchInput}
-            setSearchValue={setSearchValue}
-          />
+          <Search />
         </div>
         <div className="orderCardList">
           {renderItems()}

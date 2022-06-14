@@ -1,11 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux'
 
-import AppContext from '../context';
+import { setCartOpened } from '../redux/slices/cartSlice';
 import { useCart } from '../hooks/useCart';
 
 function Header() {
-  const {setCartOpened} = React.useContext(AppContext);
+  const dispatch = useDispatch();
   const { totalPrice } = useCart();
 
   return (
@@ -19,7 +20,7 @@ function Header() {
         </div>
       </Link>
       <ul className="d-flex">
-        <li className={(totalPrice > 0) ? "cartBlock greenBackGround" : "cartBlock"} onClick={() => setCartOpened(true)}>
+        <li className={(totalPrice > 0) ? "cartBlock greenBackGround" : "cartBlock"} onClick={() => dispatch(setCartOpened(true))}>
           <span>
             {totalPrice} руб.
           </span>

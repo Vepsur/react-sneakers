@@ -13,8 +13,6 @@ function App() {
   const [items, setItems] = React.useState([]);
   const [cartItems, setCartItems] = React.useState([]);
   const [favoriteItems, setFavoriteItems] = React.useState([]);
-  const [cartOpened, setCartOpened] = React.useState(false);
-  const [searchValue, setSearchValue] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(true);
 
   React.useEffect(() => {
@@ -87,11 +85,6 @@ function App() {
       alert('Произошла ошибка при удалении товара из корзины. Пожалуйста, обновите страницу или повторите позже.');
       console.log('Error on delete from cart');
     }
-
-  };
-
-  const onChangeSearchInput = (event) => {
-    setSearchValue(event.target.value);
   };
 
   const cartItemCheck = (title) => {
@@ -107,31 +100,22 @@ function App() {
       value={{
         items, cartItems, favoriteItems, isLoading,
         cartItemCheck, favoriteItemCheck,
-        onAddToCart, onAddToFavorites,
-        setCartOpened, setCartItems
+        onAddToCart, onAddToFavorites, setCartItems
       }}>
       <div className="wrapper clear">
         <Drawer
           onRemove={onRemoveFromCart}
-          opened={cartOpened}
         />
         <Header />
         <div className="content">
           <Routes>
             <Route
               path="react-sneakers/"
-              element={<Home
-                searchValue={searchValue}
-                setSearchValue={setSearchValue}
-              />}
+              element={<Home />}
             />
             <Route
               path="react-sneakers/favorites/"
-              element={<Favorites
-                searchValue={searchValue}
-                setSearchValue={setSearchValue}
-                onChangeSearchInput={onChangeSearchInput}
-              />}
+              element={<Favorites />}
             />
             <Route
               path="react-sneakers/orders/"

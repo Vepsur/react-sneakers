@@ -5,7 +5,6 @@ import AppContext from "../context";
 import Card from "../components/Card";
 import { Search } from "../components/Search"
 
-
 function Home() {
   const { items, isLoading, favoriteItemCheck } = React.useContext(AppContext);
   const inOrder = false;

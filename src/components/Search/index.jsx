@@ -1,4 +1,4 @@
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from "react-redux";
 
 import styles from "./Search.module.scss"
 import { changeSearchInput, cleanseSearchInput } from '../../redux/slices/filterSlice'

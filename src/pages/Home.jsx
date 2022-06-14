@@ -1,16 +1,15 @@
 import React from "react";
+import { useSelector } from 'react-redux'
 
 import AppContext from "../context";
 import Card from "../components/Card";
 import { Search } from "../components/Search"
 
-function Home({
-  searchValue,
-  setSearchValue,
-  onChangeSearchInput
-}) {
+
+function Home() {
   const { items, isLoading, favoriteItemCheck } = React.useContext(AppContext);
   const inOrder = false;
+  const searchValue = useSelector((state) => state.search.value);
 
   const renderItems = () => {
     const filterItems = items.filter(item =>
@@ -32,11 +31,7 @@ function Home({
     <div>
       <div className="contentTop">
         <h1>Все кроссовки</h1>
-        <Search
-          searchValue={searchValue}
-          onChangeSearchInput={onChangeSearchInput}
-          setSearchValue={setSearchValue}
-        />
+        <Search />
       </div>
       <div className="cardList">
         {renderItems()}

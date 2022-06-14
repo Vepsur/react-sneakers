@@ -41,10 +41,6 @@ function App() {
     fetchData();
   }, []);
 
-  const onChangeSearchInput = (event) => {
-    setSearchValue(event.target.value);
-  };
-
   const onAddToCart = async (obj) => {
     try {
       let item = cartItems.find((item) => item.title === obj.title);
@@ -94,6 +90,10 @@ function App() {
 
   };
 
+  const onChangeSearchInput = (event) => {
+    setSearchValue(event.target.value);
+  };
+
   const cartItemCheck = (title) => {
     return cartItems.some(cartItem => cartItem.title === title);
   };
@@ -106,7 +106,7 @@ function App() {
     <AppContext.Provider
       value={{
         items, cartItems, favoriteItems, isLoading,
-        cartItemCheck, favoriteItemCheck, 
+        cartItemCheck, favoriteItemCheck,
         onAddToCart, onAddToFavorites,
         setCartOpened, setCartItems
       }}>
@@ -123,7 +123,6 @@ function App() {
               element={<Home
                 searchValue={searchValue}
                 setSearchValue={setSearchValue}
-                onChangeSearchInput={onChangeSearchInput}
               />}
             />
             <Route

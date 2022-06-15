@@ -19,7 +19,7 @@ function Orders() {
           setOrders(ordersResp.data);
         } catch (error) {
           console.log('Произошла ошибка при загрузке страницы заказов. Пожалуйста, обновите страницу или повторите позже.');
-          console.log('Eror on load orders page');
+          console.log('Eror on load orders page', error);
         };
         setIsOrdersLoading(false);
       })();
@@ -32,7 +32,7 @@ function Orders() {
       await axios.delete(`https://629f57ac8b939d3dc2959500.mockapi.io/orders/${id}`);
     } catch (error) {
       alert('Произошла ошибка при отмене заказа. Пожалуйста, обновите страницу или повторите позже.')
-      console.log("Error in cancel order operation");
+      console.log("Error in cancel order operation", error);
     };
     setIsOrdersLoading(false);
   };

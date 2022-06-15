@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   value: '',
+  searchValue: '',
 }
 
 export const filterSlice = createSlice({
@@ -13,10 +14,14 @@ export const filterSlice = createSlice({
     },
     cleanseSearchInput(state) {
       state.value = '';
+      state.searchValue = '';
+    },
+    getSearchInput(state) {
+      state.searchValue = state.value;
     },
   },
 });
 
-export const { changeSearchInput, cleanseSearchInput } = filterSlice.actions;
+export const { changeSearchInput, cleanseSearchInput, getSearchInput } = filterSlice.actions;
 
 export default filterSlice.reducer;

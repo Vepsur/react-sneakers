@@ -1,5 +1,6 @@
 import React from "react";
 import { Routes, Route } from 'react-router-dom';
+import { useSelector } from 'react-redux'
 import axios from "axios";
 
 import Header from "./components/Header";
@@ -14,22 +15,20 @@ function App() {
   const [cartItems, setCartItems] = React.useState([]);
   const [favoriteItems, setFavoriteItems] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
+  const searchValue = useSelector((state) => state.search.searchValue);
 
   React.useEffect(() => {
     async function fetchData() {
-      // setIsLoading(true);
+      setIsLoading(true);
       try {
-        const [cartItemsResp, favoriteItemResp, itemsResp] = await Promise.all([
+        const [cartItemsResp, favoriteItemResp] = await Promise.all([
           axios.get('https://629f57ac8b939d3dc2959500.mockapi.io/cartItems'),
           axios.get('https://629f57ac8b939d3dc2959500.mockapi.io/favorites'),
-          axios.get('https://629f57ac8b939d3dc2959500.mockapi.io/items'),
         ]);
 
-        setIsLoading(false);
-        window.scrollTo(0, 0);
         setCartItems(cartItemsResp.data);
         setFavoriteItems(favoriteItemResp.data);
-        setItems(itemsResp.data);
+        setIsLoading(false);
       } catch (error) {
         alert('Произошла ошибка при загрузке данных. Пожалуйста, обновите страницу или повторите позже.');
         console.log('Error in data response');
@@ -38,6 +37,25 @@ function App() {
 
     fetchData();
   }, []);
+
+  React.useEffect(() => {
+    async function fetchData() {
+      setIsLoading(true);
+      const search = searchValue ? `?search=${searchValue}` : '';
+
+      try {
+          const filterItemsResp =  await axios.get(`https://629f57ac8b939d3dc2959500.mockapi.io/items${search}`);
+          // window.scrollTo(0, 0);
+          setIsLoading(false);
+          setItems(filterItemsResp.data);
+      } catch (error) {
+        alert('Произошла ошибка при загрузке данных. Пожалуйста, обновите страницу или повторите позже.');
+        console.log('Error in data response');
+      }
+    }
+
+    fetchData();
+  }, [searchValue]);
 
   const onAddToCart = async (obj) => {
     try {
@@ -98,7 +116,7 @@ function App() {
   return (
     <AppContext.Provider
       value={{
-        items, cartItems, favoriteItems, isLoading,
+        items, cartItems, favoriteItems, isLoading, setItems,
         cartItemCheck, favoriteItemCheck,
         onAddToCart, onAddToFavorites, setCartItems
       }}>

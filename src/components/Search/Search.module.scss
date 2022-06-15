@@ -6,10 +6,11 @@
     position: absolute;
     display: flex;
     cursor: pointer;
-    right: 4px;
+    right: 8px;
     padding-right: 5px;
     align-self: center;
-    height: 28px;
+    height: 14px;
+    opacity: 0.6;
 
     @media (max-width: 540px) {
       right: 0;

@@ -1,19 +1,25 @@
 import React from "react";
 import { useSelector } from 'react-redux'
 
-
-import AppContext from "../context";
 import Card from "../components/Card";
 import { Search } from "../components/Search"
 
 function Home() {
-  const { items, isLoading, favoriteItemCheck } = React.useContext(AppContext);
   const inOrder = false;
-  const {status} = useSelector((state) => state.sneakers);
+  const favorite = useSelector((state) => state.favorite.favorite);
+  const items = useSelector((state) => state.sneakers.items);
+  const sneakersStatus = useSelector((state) => state.sneakers.status);
+  const cartStatus = useSelector((state) => state.cart.status);
+  const favoriteStatus = useSelector((state) => state.favorite.status);
+  const status = (sneakersStatus === "success") && (favoriteStatus === "success") && (cartStatus === "success");
+
+  const favoriteItemCheck = (title) => {
+    return favorite.some(favItem => favItem.title === title);
+  };
 
   const renderItems = () => {
     return (
-      isLoading || status === 'loading' ? [...Array(12)] : items).map((item, index) => (
+      !status ? [...Array(12)] : items).map((item, index) => (
         <Card
           inOrder={inOrder}
           favoriteItemCheck={favoriteItemCheck}

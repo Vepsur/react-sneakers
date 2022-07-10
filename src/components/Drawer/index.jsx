@@ -1,44 +1,48 @@
 import React from "react";
 import Info from "./Info";
-import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 
-import { useCart } from '../../hooks/useCart';
+import { fetchDeleteFromCart, deleteFromCart, setTotalPrice, cleaneCart } from '../../redux/slices/cartSlice'
 import { setCartOpened } from "../../redux/slices/cartSlice";
+import { fetchCreateOrder, setCompleteStatus } from "../../redux/slices/orderSlice";
 
 import styles from './Drawer.module.scss';
 
-const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-const Drawer = ({ onRemove }) => {
+const Drawer = () => {
   const dispatch = useDispatch();
-  const cartOpened = useSelector((state) => state.cart.value);
-  const { cartItems, setCartItems, totalPrice } = useCart();
-  const [isOrderComplete, setIsOrderComplete] = React.useState(false);
-  const [orderId, setOrderId] = React.useState(null);
-  const [isLoading, setIsLoading] = React.useState(false);
+  const cart = useSelector((state) => state.cart.cart);
+  const cartOpened = useSelector((state) => state.cart.opened);
+  const { lastOrderId } = useSelector((state) => state.orders);
+  const completeStatus = useSelector((state) => state.orders.completeStatus);
+  const cleanStatus = useSelector((state) => state.cart.cleanStatus);
+  const totalPrice = useSelector((state) => state.cart.totalPrice);
 
-  const onClickOrder = async (id) => {
-    try {
-      setIsLoading(true);
-      const { data } = await axios.post(`https://629f57ac8b939d3dc2959500.mockapi.io/orders`, { "items": cartItems });
+  const findItemByTitle = (item, arr) => arr.find((obj) => item.title === obj.title);
 
-      setOrderId(data.id);
-      setIsOrderComplete(true);
-      setCartItems([]);
+  const onClickOrder = async () => {
+    dispatch(setCompleteStatus('creating'))
+    await dispatch(fetchCreateOrder(cart));
 
-      // Костыль для удаления в mockAPI
-      for (let i = 0; i < cartItems.length; i++) {
-        const item = cartItems[i];
-        await axios.delete(`https://629f57ac8b939d3dc2959500.mockapi.io/cartItems/${item.id}`);
-        await delay(500);
-      };
-    } catch (error) {
-      alert('Произошла ошибка создании заказа. Пожалуйста, обновите страницу или повторите позже.');
-      console.log('Error in creating order');
+    // Костыль для удаления в mockAPI
+    for (let i = 0; i < cart.length; i++) {
+      let item = cart[i];
+      await dispatch(fetchDeleteFromCart(item));
     };
-    setIsLoading(false);
+
+    dispatch(cleaneCart());
+    dispatch(setTotalPrice());
+    dispatch(setCompleteStatus('success'));
   };
+
+  const onClickRemove = (obj) => {
+    const item = findItemByTitle(obj, cart);
+    dispatch(deleteFromCart(item));
+    dispatch(setTotalPrice());
+    dispatch(fetchDeleteFromCart(item));
+  };
+
+
+
 
   return (
     <div className={`${styles.overlay} ${cartOpened ? styles.overlayVisible : ''}`}>
@@ -48,10 +52,10 @@ const Drawer = ({ onRemove }) => {
           Корзина
           <img onClick={() => dispatch(setCartOpened(false))} className={styles.removeBtn} src="img/remove.svg" alt="Close" />
         </h2>
-        {(cartItems.length > 0) ? (
+        {(cart && cart.length > 0) ? (
           <>
             <div className={styles.items}>
-              {cartItems.map((obj, index) => (
+              {cart.map((obj, index) => (
                 <div key={`cartItem${index}`} className={`${styles.cartItem} d-flex align-center"`}>
                   <div
                     style={{ backgroundImage: `url(${obj.imageUrl})` }}
@@ -62,7 +66,7 @@ const Drawer = ({ onRemove }) => {
                     <b>{obj.price} руб.</b>
                   </div>
                   <img
-                    onClick={() => onRemove(obj)}
+                    onClick={() => onClickRemove(obj)}
                     className={styles.removeBtn}
                     src="img/remove.svg"
                     alt="Remove"
@@ -83,20 +87,20 @@ const Drawer = ({ onRemove }) => {
                   <b>{Math.round(totalPrice * 5) / 100} руб.</b>
                 </li>
               </ul>
-              <button disabled={isLoading} onClick={onClickOrder} className={styles.greenButton}>
+              <button disabled={completeStatus === 'creating'} onClick={onClickOrder} className={styles.greenButton}>
                 Оформить заказ <img src="img/checkout_arrow.svg" alt="Arrow" />
               </button>
             </div>
           </>
         ) : (
           <Info
-            title={isOrderComplete ? `Заказ #${orderId} оформлен` : "Корзина пуста"}
+            title={cleanStatus === 'empty' ? `Заказ #${lastOrderId} оформлен` : "Корзина пуста"}
             description={
-              isOrderComplete ?
+              cleanStatus === 'empty' ?
                 `Cкоро он будет передан курьерской доставке. Не беспокойтесь, Ваш адрес мы вычислим по IP :)` :
                 "Добавьте хотя бы одну пару кроссовок, чтобы сделать заказ."
             }
-            image={isOrderComplete ? "img/complete_order.png" : "img/empty_cart.png"}
+            image={cleanStatus === 'empty' ? "img/complete_order.png" : "img/empty_cart.png"}
           />
         )}
       </div>

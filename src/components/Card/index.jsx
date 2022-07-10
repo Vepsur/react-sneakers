@@ -1,7 +1,9 @@
 import React from 'react';
 import ContentLoader from "react-content-loader";
+import { useSelector, useDispatch } from 'react-redux';
 
-import AppContext from '../../context';
+import { fetchDeleteFromCart, fetchAddToCart, setTotalPrice, addToCart, deleteFromCart } from '../../redux/slices/cartSlice'
+import { fetchDeleteFromFavorite, fetchAddToFavorite, addToFavorite, deleteFromFavorite } from '../../redux/slices/favoriteSlice'
 import styles from './Card.module.scss';
 
 export default function Card({
@@ -9,16 +11,60 @@ export default function Card({
   imageUrl,
   title,
   price,
-  inOrder,
   flexDisplay
 }) {
-  const { cartItemCheck, favoriteItemCheck, onAddToCart, onAddToFavorites, isLoading } = React.useContext(AppContext);
+  const dispatch = useDispatch();
+  const favorite = useSelector((state) => state.favorite.favorite);
+  const cart = useSelector((state) => state.cart.cart);
+  const sneakersStatus = useSelector((state) => state.sneakers.status);
+  const cartStatus = useSelector((state) => state.cart.status);
+  const favoriteStatus = useSelector((state) => state.favorite.status);
+  const status = (sneakersStatus === "success") && (favoriteStatus === "success") && (cartStatus === "success");
+  const findItemByTitle = (item, arr) => arr.find((obj) => item.title === obj.title);
+
+  const onAddToCart = (obj) => {
+    const item = findItemByTitle(obj, cart);
+    if (item) {
+      dispatch(deleteFromCart(item));
+      dispatch(setTotalPrice());
+      dispatch(fetchDeleteFromCart(item));
+    } else {
+      cart.length > 0 ? obj.id = cart.length + 1 : obj.id = 1;
+      dispatch(addToCart(obj));
+      dispatch(setTotalPrice());
+      dispatch(fetchAddToCart(obj));
+    }
+  };
+
+  const onAddToFavorites = (obj) => {
+    const item = findItemByTitle(obj, favorite);
+    if (item) {
+      dispatch(deleteFromFavorite(item));
+      dispatch(setTotalPrice());
+      dispatch(fetchDeleteFromFavorite(item));
+    } else {
+      favorite.length > 0 ? obj.id = favorite.length + 1 : obj.id = 1;
+      dispatch(addToFavorite(obj));
+      dispatch(setTotalPrice());
+      dispatch(fetchAddToFavorite(obj));
+    }
+  };
+
+  const cartItemCheck = (title) => {
+    if (cart && cart.length > 0) return cart.some(cartItem => cartItem.title === title);
+    return false;
+  };
+
+  const favoriteItemCheck = (title) => {
+    return favorite.some(favItem => favItem.title === title);
+  };
+
 
   return (
     <div className='d-flex justify-center'>
       <div className={flexDisplay ? styles.card + " mr-20" : styles.card}>
         {
-          isLoading
+          !status
             ? <ContentLoader
               speed={2}
               width={180}
@@ -34,7 +80,7 @@ export default function Card({
               <rect x="0" y="0" rx="5" ry="5" width="150" height="90" />
             </ContentLoader>
             : <>
-              {!inOrder && favoriteItemCheck &&
+              {
                 (<div className={styles.favorite}>
                   <img
                     src={favoriteItemCheck(title) ? "img/heart_checked.svg" : "img/heart_unchecked.svg"}
@@ -49,7 +95,7 @@ export default function Card({
                   <span>Цена:</span>
                   <b>{price} руб.</b>
                 </div>
-                {!inOrder && cartItemCheck &&
+                {
                   (<img
                     className={styles.plus}
                     onClick={() => onAddToCart({ id, imageUrl, title, price })}

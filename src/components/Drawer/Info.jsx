@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import styles from './Drawer.module.scss';
 import { setCartOpened } from "../../redux/slices/cartSlice";

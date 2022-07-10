@@ -1,46 +1,31 @@
 import React from "react";
-import axios from "axios";
+import { useSelector, useDispatch } from 'react-redux'
 
+import { fetchOrders, fetchCancelOrder, deleteFromOrders } from "../redux/slices/orderSlice";
 import Info from "../components/Info";
 import Card from "../components/Card";
 
 
 function Orders() {
-  const [orders, setOrders] = React.useState([]);
+  const dispatch = useDispatch();
+  const orders = useSelector((state) => state.orders.orders);
+  const status = useSelector((state) => state.orders.status) === 'success';
   const flexDisplay = true;
-  const [isOrdersLoading, setIsOrdersLoading] = React.useState(true);
+  const ordersPage = true;
 
   React.useEffect(() => {
-    (
-      async () => {
-        try {
-          setIsOrdersLoading(true);
-          const ordersResp = await axios.get('https://629f57ac8b939d3dc2959500.mockapi.io/orders');
-          setOrders(ordersResp.data);
-        } catch (error) {
-          console.log('Произошла ошибка при загрузке страницы заказов. Пожалуйста, обновите страницу или повторите позже.');
-          console.log('Eror on load orders page', error);
-        };
-        setIsOrdersLoading(false);
-      })();
+    dispatch(fetchOrders());
   }, []);
 
-  const onCancelOrder = async (id) => {
-    try {
-      setIsOrdersLoading(true);
-      setOrders(prev => prev.filter(order => order.id !== id));
-      await axios.delete(`https://629f57ac8b939d3dc2959500.mockapi.io/orders/${id}`);
-    } catch (error) {
-      alert('Произошла ошибка при отмене заказа. Пожалуйста, обновите страницу или повторите позже.')
-      console.log("Error in cancel order operation", error);
-    };
-    setIsOrdersLoading(false);
+  const onCancelOrder = (obj) => {
+    dispatch(deleteFromOrders(obj))
+    dispatch(fetchCancelOrder(obj));
   };
 
   const renderOrders = () => {
     return (
-      (orders.length < 1) ? (
-        <Info isOrdersLoading={isOrdersLoading}/>
+      (orders.length < 1 || !status) ? (
+        <Info ordersPage={ordersPage} />
       ) : (
         <>
           <div>
@@ -49,12 +34,12 @@ function Orders() {
             </div>
           </div>
           {
-            orders.map((order, orderID) => (
-              <div className="ordersList" key={`order${orderID}`}>
+            orders.map((order, orderIndex) => (
+              <div className="ordersList" key={`order${orderIndex}`}>
                 <div className="order mb-30 mt-30">
                   <div className="d-flex align-center">
-                    <h2 className="mr-20">{isOrdersLoading ? `Заказ ##` : `Заказ #${order.id}`}</h2>
-                    <button onClick={() => onCancelOrder(order.id)} className="greenButton redBtn">Отменить</button>
+                    <h2 className="mr-20">{!status ? `Заказ ##` : `Заказ #${order.id}`}</h2>
+                    <button onClick={() => onCancelOrder(order)} className="greenButton redBtn">Отменить</button>
                   </div>
                   <div className="orderCardList">
                     {
@@ -62,7 +47,7 @@ function Orders() {
                         <Card
                           inOrder={true}
                           flexDisplay={flexDisplay}
-                          key={`order${orderID}_card${index}`}
+                          key={`order${orderIndex}_card${index}`}
                           {...item}
                         />
                       ))

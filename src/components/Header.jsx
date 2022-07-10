@@ -7,7 +7,7 @@ import { useCart } from '../hooks/useCart';
 
 function Header() {
   const dispatch = useDispatch();
-  const { totalPrice } = useCart();
+  const totalPrice = useSelector((state) => state.cart.totalPrice);
 
   return (
     <header className="d-flex justify-between align-center">

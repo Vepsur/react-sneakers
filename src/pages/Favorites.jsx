@@ -1,19 +1,26 @@
 import React from "react";
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 import Info from "../components/Info";
-import AppContext from "../context";
 import Card from "../components/Card";
 import { Search } from "../components/Search"
 
 function Favorites() {
-  const dispatch = useDispatch();
   const searchValue = useSelector((state) => state.search.value);
-  const { cartItemCheck, favoriteItemCheck, favoriteItems } = React.useContext(AppContext);
+  const favorite = useSelector((state) => state.favorite.favorite);
+  const cart = useSelector((state) => state.cart.cart);
   const isFlexDisplay = true;
 
+  const cartItemCheck = (title) => {
+    return cart.some(cartItem => cartItem.title === title);
+  };
+
+  const favoriteItemCheck = (title) => {
+    return favorite.some(favItem => favItem.title === title);
+  };
+
   const renderItems = () => {
-    const filterItems = favoriteItems.filter(item =>
+    const filterItems = favorite.filter(item =>
       item.title.toLowerCase().includes(searchValue.toLowerCase())
     );
 
@@ -30,7 +37,7 @@ function Favorites() {
   };
 
   return (
-    (favoriteItems.length < 1) ? (
+    (favorite.length < 1) ? (
       <Info favoritePage={true} />
     ) : (
       <div>

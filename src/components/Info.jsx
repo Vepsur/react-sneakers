@@ -1,8 +1,7 @@
 import React from 'react';
 import ContentLoader from "react-content-loader";
 import { Link } from 'react-router-dom';
-
-import AppContext from "../context";
+import { useSelector } from 'react-redux';
 
 function random(min, max) {
   let num = 0;
@@ -10,12 +9,13 @@ function random(min, max) {
   return num;
 };
 
-const Info = ({ favoritePage, isOrdersLoading }) => {
-  const { isLoading } = React.useContext(AppContext);
+const Info = ({ favoritePage, ordersPage }) => {
+  const favoriteStatus = useSelector((state) => state.favorite.status) === 'success';
+  const ordersStatus = useSelector((state) => state.orders.status) === 'success';
 
   return (
     <div className='orders'>
-      {(isLoading || isOrdersLoading) ? (
+      {!((favoriteStatus && favoritePage) || (ordersStatus && ordersPage)) ? (
         <ContentLoader
           viewBox="0 0 400 160"
           height={160}

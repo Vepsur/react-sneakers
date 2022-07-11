@@ -1,24 +1,36 @@
 import React from 'react';
 import ContentLoader from "react-content-loader";
+import { useSelector } from 'react-redux';
+import { RootState } from 'src/redux/store';
 
 import AppContext from '../../context';
 import styles from './Card.module.scss';
 
-export default function Card({
+type CardProps = {
+  id: string;
+  imageUrl: string;
+  title: string;
+  price: number;
+  inOrder?: boolean;
+  stub: boolean;
+};
+
+const Card: React.FC<CardProps> = ({
   id,
   imageUrl,
   title,
   price,
   inOrder,
-  flexDisplay
-}) {
+  stub
+}) => {
   const { cartItemCheck, favoriteItemCheck, onAddToCart, onAddToFavorites, isLoading } = React.useContext(AppContext);
+  const { itemsRespStatus } = useSelector((state: RootState) => state.sneakers);
 
   return (
     <div className='d-flex justify-center'>
-      <div className={flexDisplay ? styles.card + " mr-20" : styles.card}>
+      <div className={stub ? `${styles.card} ${styles.invisibleStub}` : styles.card}>
         {
-          isLoading
+          isLoading || itemsRespStatus !== 'success'
             ? <ContentLoader
               speed={2}
               width={180}
@@ -65,3 +77,5 @@ export default function Card({
     </div>
   );
 };
+
+export default  Card;

@@ -5,20 +5,27 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { useCart } from '../../hooks/useCart';
 import { setCartOpened } from "../../redux/slices/cartSlice";
+import { RootState } from "src/redux/store";
+import AppContext from "src/context";
 
 import styles from './Drawer.module.scss';
 
-const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+type DrawerProps = {
+  onRemove: any;
+}
 
-const Drawer = ({ onRemove }) => {
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const Drawer: React.FC<DrawerProps> = ({ onRemove }) => {
   const dispatch = useDispatch();
-  const cartOpened = useSelector((state) => state.cart.value);
-  const { cartItems, setCartItems, totalPrice } = useCart();
+  const cartOpened = useSelector((state: RootState) => state.cart.value);
+  const { totalPrice } = useCart();
+  const { cartItems, setCartItems } = React.useContext(AppContext);
   const [isOrderComplete, setIsOrderComplete] = React.useState(false);
   const [orderId, setOrderId] = React.useState(null);
   const [isLoading, setIsLoading] = React.useState(false);
 
-  const onClickOrder = async (id) => {
+  const onClickOrder = async () => {
     try {
       setIsLoading(true);
       const { data } = await axios.post(`https://629f57ac8b939d3dc2959500.mockapi.io/orders`, { "items": cartItems });

@@ -1,23 +1,24 @@
 import React from "react";
-import { Routes, Route, useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux'
+import { Routes, Route } from 'react-router-dom';
+import { useSelector } from 'react-redux'
 import axios from "axios";
 
-import { fetchSneakers } from './redux/slices/itemsSlice'
+import { fetchSneakers, Item } from './redux/slices/itemsSlice'
 import Header from "./components/Header";
 import Drawer from "./components/Drawer";
 import Home from "./pages/Home";
 import Favorites from "./pages/Favorites";
 import Orders from "./pages/Orders";
 import AppContext from "./context";
+import { RootState, useAppDispatch } from "./redux/store";
 
 function App() {
-  const dispatch = useDispatch();
-  const [cartItems, setCartItems] = React.useState([]);
-  const [favoriteItems, setFavoriteItems] = React.useState([]);
-  const [isLoading, setIsLoading] = React.useState(true);
-  const searchValue = useSelector((state) => state.search.searchValue);
-  const {items, status} = useSelector((state) => state.sneakers);
+  const dispatch = useAppDispatch();
+  const [cartItems, setCartItems] = React.useState<Item[]>([]);
+  const [favoriteItems, setFavoriteItems] = React.useState<Item[]>([]);
+  const [isLoading, setIsLoading] = React.useState<boolean>(true);
+  const searchValue = useSelector((state: RootState) => state.search.searchValue);
+  const {items} = useSelector((state: RootState) => state.sneakers);
 
   React.useEffect(() => {
     async function fetchData() {
@@ -42,15 +43,12 @@ function App() {
 
   React.useEffect(() => {
 
-    const search = searchValue ? `?search=${searchValue}` : '';
+    const search = searchValue ? `?title=${searchValue}` : '';
+    dispatch(fetchSneakers(search));
 
-      // window.scrollTo(0, 0);
+  }, [searchValue, dispatch]);
 
-      dispatch(fetchSneakers(search));
-
-  }, [searchValue]);
-
-  const onAddToCart = async (obj) => {
+  const onAddToCart = async (obj: Item) => {
     try {
       let item = cartItems.find((item) => item.title === obj.title);
       if (item) {
@@ -58,7 +56,7 @@ function App() {
         await axios.delete(`https://629f57ac8b939d3dc2959500.mockapi.io/cartItems/${item.id}`);
       } else {
         setCartItems((prev) => {
-          prev.length > 0 ? obj.id = prev.length + 1 : obj.id = 1;
+          prev.length > 0 ? obj.id = `${+prev[prev.length - 1].id + 1}` : obj.id = "1";
           return [...prev, obj]
         });
         await axios.post('https://629f57ac8b939d3dc2959500.mockapi.io/cartItems', obj);
@@ -69,7 +67,7 @@ function App() {
     }
   };
 
-  const onAddToFavorites = async (obj) => {
+  const onAddToFavorites = async (obj: Item) => {
     try {
       let item = favoriteItems.find((favItem) => favItem.title === obj.title);
       if (item) {
@@ -77,9 +75,10 @@ function App() {
         await axios.delete(`https://629f57ac8b939d3dc2959500.mockapi.io/favorites/${item.id}`);
       } else {
         setFavoriteItems((prev) => {
-          prev.length > 0 ? obj.id = prev.length + 1 : obj.id = 1;
+          prev.length > 0 ? obj.id = `${+prev[prev.length - 1].id + 1}` : obj.id = "1";
           return [...prev, obj]
         });
+        console.log(obj);
         await axios.post('https://629f57ac8b939d3dc2959500.mockapi.io/favorites', obj);
       }
     } catch (error) {
@@ -88,7 +87,7 @@ function App() {
     }
   };
 
-  const onRemoveFromCart = async (obj) => {
+  const onRemoveFromCart = async (obj: Item) => {
     try {
       setCartItems(prev => prev.filter(item => item.title !== obj.title));
       await axios.delete(`https://629f57ac8b939d3dc2959500.mockapi.io/cartItems/${obj.id}`);
@@ -98,11 +97,11 @@ function App() {
     }
   };
 
-  const cartItemCheck = (title) => {
+  const cartItemCheck = (title: string): boolean => {
     return cartItems.some(cartItem => cartItem.title === title);
   };
 
-  const favoriteItemCheck = (title) => {
+  const favoriteItemCheck = (title: string): boolean => {
     return favoriteItems.some(favItem => favItem.title === title);
   };
 

@@ -1,10 +1,16 @@
 import React from 'react';
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import styles from './Drawer.module.scss';
 import { setCartOpened } from "../../redux/slices/cartSlice";
 
-const Info = ({ title, description, image }) => {
+type InfoProps = {
+  title: string;
+  description: string;
+  image: string;
+}
+
+const Info: React.FC<InfoProps> = ({ title, description, image }) => {
   const dispatch = useDispatch();
 
   return (

@@ -4,13 +4,18 @@ import { Link } from 'react-router-dom';
 
 import AppContext from "../context";
 
-function random(min, max) {
+type InfoProps = {
+  favoritePage?: boolean;
+  isOrdersLoading?: boolean;
+}
+
+function random(min: number, max:number) {
   let num = 0;
   num = +(min + (max - min) * Math.random()).toFixed(0);
   return num;
 };
 
-const Info = ({ favoritePage, isOrdersLoading }) => {
+const Info: React.FC<InfoProps> = ({ favoritePage, isOrdersLoading }) => {
   const { isLoading } = React.useContext(AppContext);
 
   return (

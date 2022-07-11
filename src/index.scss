@@ -176,23 +176,13 @@ header {
     grid-row-gap: 20px;
     width: 100%;
     height: 100%;
-
-    @media (max-width: 1000px) {
-      grid-template-columns: repeat(3, 1fr);
-    }
-
-    @media (max-width: 790px) {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    @media (max-width: 520px) {
-      grid-template-columns: repeat(1, 1fr);
-    }
   }
 
   .orderCardList {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-column-gap: 0;
+    grid-row-gap: 20px;
     width: 100%;
     height: 100%;
   }

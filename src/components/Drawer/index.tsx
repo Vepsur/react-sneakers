@@ -16,7 +16,7 @@ type DrawerProps = {
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-const Drawer: React.FC<DrawerProps> = ({ onRemove }) => {
+const Drawer: React.FC<DrawerProps> = React.memo((({ onRemove }) => {
   const dispatch = useDispatch();
   const cartOpened = useSelector((state: RootState) => state.cart.value);
   const { totalPrice } = useCart();
@@ -109,6 +109,6 @@ const Drawer: React.FC<DrawerProps> = ({ onRemove }) => {
       </div>
     </div>
   )
-};
+}));
 
 export default Drawer;

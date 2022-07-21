@@ -17,7 +17,7 @@ type OrderItems = {
   items: Item[];
 };
 
-const Orders: React.FC = () => {
+const Orders: React.FC = React.memo(() => {
   const [orders, setOrders] = React.useState<OrderItems[]>([]);
   let stub: boolean;
   const inOrder = true;
@@ -31,7 +31,7 @@ const Orders: React.FC = () => {
           const ordersResp = await axios.get('https://629f57ac8b939d3dc2959500.mockapi.io/orders');
           setOrders(ordersResp.data);
         } catch (error) {
-          console.log('Произошла ошибка при загрузке страницы заказов. Пожалуйста, обновите страницу или повторите позже.');
+          alert('Произошла ошибка при загрузке страницы заказов. Пожалуйста, обновите страницу или повторите позже.');
           console.log('Eror on load orders page', error);
         };
         setIsOrdersLoading(false);
@@ -103,6 +103,6 @@ const Orders: React.FC = () => {
       {renderOrders()}
     </>
   )
-};
+});
 
 export default Orders;

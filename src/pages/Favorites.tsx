@@ -7,7 +7,7 @@ import Card from "../components/Card";
 import { Search } from "../components/Search"
 import { RootState } from "src/redux/store";
 
-function Favorites() {
+const Favorites = React.memo((() => {
   const searchValue = useSelector((state: RootState) => state.search.value);
   const { favoriteItems } = React.useContext(AppContext);
   let stub: boolean;
@@ -48,6 +48,6 @@ function Favorites() {
         </div>
       </div>
     ))
-};
+}));
 
 export default Favorites;

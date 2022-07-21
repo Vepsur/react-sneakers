@@ -23,6 +23,7 @@ export const fetchSneakers = createAsyncThunk<Item[], string>(
   'sneakers/fetchSneakersStatus',
   async (search) => {
     const { data } = await axios.get<Item[]>(`https://629f57ac8b939d3dc2959500.mockapi.io/items${search}`);
+    if (data.length < 4) data.push(...Array(4 - data.length));
 
     return data;
   }

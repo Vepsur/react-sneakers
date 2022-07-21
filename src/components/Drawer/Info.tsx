@@ -10,7 +10,7 @@ type InfoProps = {
   image: string;
 }
 
-const Info: React.FC<InfoProps> = ({ title, description, image }) => {
+const Info: React.FC<InfoProps> = React.memo(({ title, description, image }) => {
   const dispatch = useDispatch();
 
   return (
@@ -29,6 +29,6 @@ const Info: React.FC<InfoProps> = ({ title, description, image }) => {
       </div>
     </>
   )
-};
+});
 
 export default Info;

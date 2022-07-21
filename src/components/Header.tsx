@@ -1,13 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux'
+import { useWhyDidYouUpdate } from 'ahooks';
 
 import { setCartOpened } from '../redux/slices/cartSlice';
 import { useCart } from '../hooks/useCart';
 
-function Header() {
+const Header = React.memo(() => {
   const dispatch = useDispatch();
-  const { totalPrice } = useCart();
+  let { totalPrice } = useCart();
+  
+  useWhyDidYouUpdate('Header', { totalPrice, dispatch, setCartOpened, useCart, useDispatch });
 
   return (
     <header className="d-flex justify-between align-center">
@@ -44,6 +47,6 @@ function Header() {
       </ul>
     </header>
   )
-};
+});
 
 export default Header;

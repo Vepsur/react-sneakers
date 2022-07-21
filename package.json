@@ -13,6 +13,7 @@
     "@types/node": "^18.0.3",
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",
+    "ahooks": "^3.5.2",
     "axios": "^0.27.2",
     "gh-pages": "^4.0.0",
     "lodash.debounce": "^4.0.8",
@@ -52,8 +53,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "typescript-plugin-css-modules": "^3.4.0"
   }
 }

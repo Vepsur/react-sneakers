@@ -1,29 +1,28 @@
 import React from "react";
-import { useSelector} from "react-redux";
+import { useSelector } from "react-redux";
 import { debounce } from "lodash";
 
 import styles from "./Search.module.scss"
 import { changeSearchInput, cleanseSearchInput, getSearchInput } from '../../redux/slices/filterSlice'
 import { RootState, useAppDispatch } from "src/redux/store";
 
-const Search = () => {
+const Search = React.memo(() => {
   const searchValue = useSelector((state: RootState) => state.search.value);
   const dispatch = useAppDispatch();
   const inputRef = React.useRef<HTMLInputElement>(null);
+  
+  // eslint-disable-next-line
+  const updateSearchValue = React.useCallback(debounce(() => dispatch(getSearchInput()), 250), []); 
 
-  const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeInput = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(changeSearchInput(event.target.value));
     updateSearchValue();
-  };
+  }, [updateSearchValue, dispatch]);
 
-  const updateSearchValue = React.useCallback(() =>
-    debounce(() => dispatch(getSearchInput()), 250), [dispatch]
-  );
-
-  const onCleanInput = () => {
+  const onCleanInput = React.useCallback(() => {
     dispatch(cleanseSearchInput());
     inputRef.current?.focus();
-  };
+  }, [dispatch]);
 
 
   return (
@@ -45,6 +44,6 @@ const Search = () => {
       }
     </div>
   )
-};
+});
 
 export { Search };

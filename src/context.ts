@@ -2,7 +2,6 @@ import React from "react";
 import { Item } from "./redux/slices/itemsSlice";
 
 interface IAppContext {
-  items: Item[];
   cartItems: Item[];
   favoriteItems: Item[];
   isLoading: boolean;
@@ -11,10 +10,10 @@ interface IAppContext {
   onAddToCart: (obj: Item) => void;
   onAddToFavorites: (obj: Item) => void;
   setCartItems: React.Dispatch<React.SetStateAction<Item[]>>;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const AppContext = React.createContext<IAppContext>({
-  items: [],
   cartItems: [],
   favoriteItems: [],
   isLoading: true,
@@ -23,6 +22,7 @@ const AppContext = React.createContext<IAppContext>({
   onAddToCart: () => {},
   onAddToFavorites: () => {},
   setCartItems: () => {},
+  setIsLoading: () => {}
 });
 
 export default AppContext;

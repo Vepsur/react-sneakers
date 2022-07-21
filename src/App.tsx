@@ -7,18 +7,18 @@ import { fetchSneakers, Item } from './redux/slices/itemsSlice'
 import Header from "./components/Header";
 import Drawer from "./components/Drawer";
 import Home from "./pages/Home";
+import SneakersInfo from "./pages/SneakersInfo";
 import Favorites from "./pages/Favorites";
 import Orders from "./pages/Orders";
 import AppContext from "./context";
 import { RootState, useAppDispatch } from "./redux/store";
 
-function App() {
+const App = React.memo(() => {
   const dispatch = useAppDispatch();
   const [cartItems, setCartItems] = React.useState<Item[]>([]);
   const [favoriteItems, setFavoriteItems] = React.useState<Item[]>([]);
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const searchValue = useSelector((state: RootState) => state.search.searchValue);
-  const {items} = useSelector((state: RootState) => state.sneakers);
 
   React.useEffect(() => {
     async function fetchData() {
@@ -42,13 +42,12 @@ function App() {
   }, []);
 
   React.useEffect(() => {
-
     const search = searchValue ? `?title=${searchValue}` : '';
-    dispatch(fetchSneakers(search));
 
+    dispatch(fetchSneakers(search));
   }, [searchValue, dispatch]);
 
-  const onAddToCart = async (obj: Item) => {
+  const onAddToCart = React.useCallback(async (obj: Item) => {
     try {
       let item = cartItems.find((item) => item.title === obj.title);
       if (item) {
@@ -65,9 +64,9 @@ function App() {
       alert("Произошла ошибка при добавлении товара в корзину. Пожалуйста, обновите страницу или повторите позже.");
       console.log("Error in add to cart", error);
     }
-  };
+  }, [cartItems]);
 
-  const onAddToFavorites = async (obj: Item) => {
+  const onAddToFavorites = React.useCallback(async (obj: Item) => {
     try {
       let item = favoriteItems.find((favItem) => favItem.title === obj.title);
       if (item) {
@@ -78,16 +77,15 @@ function App() {
           prev.length > 0 ? obj.id = `${+prev[prev.length - 1].id + 1}` : obj.id = "1";
           return [...prev, obj]
         });
-        console.log(obj);
         await axios.post('https://629f57ac8b939d3dc2959500.mockapi.io/favorites', obj);
       }
     } catch (error) {
       alert("Произошла ошибка при добавлении товара в избранное. Пожалуйста, обновите страницу или повторите позже.");
       console.log("Error in add to favorite", error);
     }
-  };
+  }, [favoriteItems]);
 
-  const onRemoveFromCart = async (obj: Item) => {
+  const onRemoveFromCart = React.useCallback(async (obj: Item) => {
     try {
       setCartItems(prev => prev.filter(item => item.title !== obj.title));
       await axios.delete(`https://629f57ac8b939d3dc2959500.mockapi.io/cartItems/${obj.id}`);
@@ -95,21 +93,21 @@ function App() {
       alert('Произошла ошибка при удалении товара из корзины. Пожалуйста, обновите страницу или повторите позже.');
       console.log('Error on delete from cart', error);
     }
-  };
+  }, []);
 
-  const cartItemCheck = (title: string): boolean => {
+  const cartItemCheck = React.useCallback((title: string): boolean => {
     return cartItems.some(cartItem => cartItem.title === title);
-  };
+  }, [cartItems]);
 
-  const favoriteItemCheck = (title: string): boolean => {
+  const favoriteItemCheck = React.useCallback((title: string): boolean => {
     return favoriteItems.some(favItem => favItem.title === title);
-  };
+  }, [favoriteItems]);
 
   return (
     <AppContext.Provider
       value={{
-        items, cartItems, favoriteItems, isLoading,
-        cartItemCheck, favoriteItemCheck,
+        cartItems, favoriteItems, isLoading,
+        cartItemCheck, favoriteItemCheck, setIsLoading,
         onAddToCart, onAddToFavorites, setCartItems
       }}>
       <div className="wrapper clear">
@@ -120,15 +118,19 @@ function App() {
         <div className="content">
           <Routes>
             <Route
-              path="react-sneakers/"
+              path="/react-sneakers/"
               element={<Home />}
             />
             <Route
-              path="react-sneakers/favorites/"
+              path="/react-sneakers/sneakers/:id"
+              element={<SneakersInfo />}
+            />
+            <Route
+              path="/react-sneakers/favorites/"
               element={<Favorites />}
             />
             <Route
-              path="react-sneakers/orders/"
+              path="/react-sneakers/orders/"
               element={<Orders />}
             />
           </Routes>
@@ -136,7 +138,7 @@ function App() {
       </div>
     </AppContext.Provider>
   )
-};
+});
 
 export default App;
 

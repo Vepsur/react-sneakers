@@ -5,6 +5,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #E7F6FF;
+  min-height: 100vh;
 }
 
 * {
@@ -78,7 +79,7 @@ header {
       cursor: pointer;
       margin: auto;
       margin-right: 15px;
-    
+
       @media (max-width: 650px) {
         margin-right: 0;
       }
@@ -149,9 +150,10 @@ header {
 }
 
 .content {
+  position: relative;
   overflow: auto;
   padding: 40px;
-  min-height: 530px;
+  min-height: 70vh;
 
   @media (max-width: 650px) {
     padding: 20px;
@@ -271,6 +273,14 @@ header {
   }
 }
 
+.infoBtn {
+  background: #89F09C;
+
+  &:hover {
+    background: lighten($color: #89F09C, $amount: 5%);
+  }
+}
+
 .redBtn {
   width: 90px;
   height: 25px;
@@ -284,4 +294,8 @@ header {
   &:active {
     background: darken($color: #de4141, $amount: 5%);
   }
+}
+
+.invisible {
+  display: none;
 }

@@ -1,0 +1,91 @@
+.sneakersInfo {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  margin: 0 auto;
+  align-items: center;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+  }
+
+  .sneakersText {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    margin-left: 20px;
+    margin-right: 20px;
+
+    @media (max-width: 600px) {
+      width: 80%;
+    }
+  }
+
+  h2 {
+    margin-bottom: 1.2em;
+  }
+
+  p {
+    margin-top: 0.8em;
+    margin-bottom: 1.2em;
+  }
+
+  .infoImages {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 500px;
+    width: 50%;
+    height: 100%;
+    margin: 0 auto;
+    margin-right: 40px;
+
+    @media (max-width: 600px) {
+      margin-right: auto;
+      width: 80%;
+    }
+
+    .mainImg {
+      display: block;
+      box-sizing: inherit;
+      border: solid 1px #EAEAEA;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      overflow: hidden;
+      
+      .sneakersImg {
+        width: 100%;
+        padding: 20px;
+        transition: transform 1s ease-in-out;
+
+        &:hover {
+          transform: scale(1.3);
+        }
+      }
+    }
+
+    .otherImg {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      img {
+        width: 33%;
+        cursor: pointer;
+      }
+    }
+
+
+  }
+
+  .favorite {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    cursor: pointer;
+    z-index: 2;
+  }
+}

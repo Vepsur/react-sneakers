@@ -23,6 +23,7 @@ export const filterSlice = createSlice({
     },
     getSearchInput(state) {
       state.searchValue = state.value;
+      console.log(1);
     },
   },
 });

@@ -9,14 +9,15 @@ type InfoProps = {
   isOrdersLoading?: boolean;
 }
 
-function random(min: number, max:number) {
-  let num = 0;
-  num = +(min + (max - min) * Math.random()).toFixed(0);
-  return num;
-};
 
-const Info: React.FC<InfoProps> = ({ favoritePage, isOrdersLoading }) => {
+const Info: React.FC<InfoProps> = React.memo(({ favoritePage, isOrdersLoading }) => {
   const { isLoading } = React.useContext(AppContext);
+
+  const random = (min: number, max: number) => {
+    let num = 0;
+    num = +(min + (max - min) * Math.random()).toFixed(0);
+    return num;
+  };
 
   return (
     <div className='orders'>
@@ -55,6 +56,6 @@ const Info: React.FC<InfoProps> = ({ favoritePage, isOrdersLoading }) => {
       )}
     </div>
   )
-};
+});
 
 export default Info;

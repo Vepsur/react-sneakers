@@ -1,6 +1,7 @@
 import React from 'react';
 import ContentLoader from "react-content-loader";
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { RootState } from 'src/redux/store';
 
 import AppContext from '../../context';
@@ -15,14 +16,7 @@ type CardProps = {
   stub: boolean;
 };
 
-const Card: React.FC<CardProps> = ({
-  id,
-  imageUrl,
-  title,
-  price,
-  inOrder,
-  stub
-}) => {
+const Card: React.FC<CardProps> = React.memo(({ id, imageUrl, title, price, inOrder, stub }) => {
   const { cartItemCheck, favoriteItemCheck, onAddToCart, onAddToFavorites, isLoading } = React.useContext(AppContext);
   const { itemsRespStatus } = useSelector((state: RootState) => state.sneakers);
 
@@ -54,10 +48,12 @@ const Card: React.FC<CardProps> = ({
                     onClick={() => onAddToFavorites({ id, imageUrl, title, price })}
                   />
                 </div>)}
-              <img width={133} height={112} src={imageUrl} alt="Sneakers" />
-              <h5>{title}</h5>
+              <Link to={`/react-sneakers/sneakers/${id}`}>
+                <img width={133} src={imageUrl} alt="Sneakers" />
+                <h5>{title}</h5>
+              </Link>
               <div className="d-flex justify-between align-center">
-                <div className="d-flex flex-column">
+                <div className={`${styles.cardInfo} d-flex flex-column`}>
                   <span>Цена:</span>
                   <b>{price} руб.</b>
                 </div>
@@ -76,6 +72,6 @@ const Card: React.FC<CardProps> = ({
       </div>
     </div>
   );
-};
+});
 
-export default  Card;
+export default Card;

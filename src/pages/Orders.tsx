@@ -5,13 +5,6 @@ import Info from "../components/Info";
 import Card from "../components/Card";
 import { Item } from "src/redux/slices/itemsSlice";
 
-/* type Items = {
-  id: number;
-  title: string;
-  price: number;
-  imageUrl: string;
-}[]; */
-
 type OrderItems = {
   id: string;
   items: Item[];

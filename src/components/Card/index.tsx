@@ -23,9 +23,9 @@ const Card: React.FC<CardProps> = React.memo(({ id, imageUrl, title, price, inOr
   return (
     <div className='d-flex justify-center'>
       <div className={stub ? `${styles.card} ${styles.invisibleStub}` : styles.card}>
-        {
-          isLoading || itemsRespStatus !== 'success'
-            ? <ContentLoader
+        {(isLoading || itemsRespStatus !== 'success')
+          ? (
+            <ContentLoader
               speed={2}
               width={180}
               height={220}
@@ -39,9 +39,10 @@ const Card: React.FC<CardProps> = React.memo(({ id, imageUrl, title, price, inOr
               <rect x="0" y="155" rx="10" ry="10" width="80" height="25" />
               <rect x="0" y="0" rx="5" ry="5" width="150" height="90" />
             </ContentLoader>
-            : <>
+          ) : (
+            <>
               {!inOrder && favoriteItemCheck &&
-                (<div className={styles.favorite}>
+                (<div className={styles.card__favorite}>
                   <img
                     src={favoriteItemCheck(title) ? "img/heart_checked.svg" : "img/heart_unchecked.svg"}
                     alt="Uliked"
@@ -53,13 +54,13 @@ const Card: React.FC<CardProps> = React.memo(({ id, imageUrl, title, price, inOr
                 <h5>{title}</h5>
               </Link>
               <div className="d-flex justify-between align-center">
-                <div className={`${styles.cardInfo} d-flex flex-column`}>
+                <div className={styles.card__cardInfo}>
                   <span>Цена:</span>
                   <b>{price} руб.</b>
                 </div>
                 {!inOrder && cartItemCheck &&
                   (<img
-                    className={styles.plus}
+                    className={styles.card__plus}
                     onClick={() => onAddToCart({ id, imageUrl, title, price })}
                     width={32}
                     height={32}
@@ -67,7 +68,7 @@ const Card: React.FC<CardProps> = React.memo(({ id, imageUrl, title, price, inOr
                     alt="Plus"
                   />)}
               </div>
-            </>
+            </>)
         }
       </div>
     </div>

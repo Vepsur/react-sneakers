@@ -23,7 +23,7 @@ const Header = React.memo(() => {
         </div>
       </Link>
       <ul className="d-flex">
-        <li className={(totalPrice > 0) ? "cartBlock greenBackGround" : "cartBlock"} onClick={() => dispatch(setCartOpened(true))}>
+        <li className={(totalPrice > 0) ? "cartBlock greenBackground" : "cartBlock"} onClick={() => dispatch(setCartOpened(true))}>
           <span>
             {totalPrice} руб.
           </span>

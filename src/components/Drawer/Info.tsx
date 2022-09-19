@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 
 import styles from './Drawer.module.scss';
 import { setCartOpened } from "../../redux/slices/cartSlice";
+import { Button } from '../Button/Button';
 
 type InfoProps = {
   title: string;
@@ -19,13 +20,15 @@ const Info: React.FC<InfoProps> = React.memo(({ title, description, image }) => 
         <img width={120} src={image} alt="Empty box" />
         <h2>{title}</h2>
         <p>{description}</p>
-        <button onClick={() => dispatch(setCartOpened(false))} className={styles.greenButton}>
-          Вернуться назад<img
-            className={styles.arrow}
-            src="img/return_arrow.svg"
-            alt="Arrow"
-          />
-        </button>
+        <Button
+          arrow
+          arrowLeft
+          onClick={() => dispatch(setCartOpened(false))}
+          widthFull
+          size="large"
+        >
+          Вернуться назад
+        </Button>
       </div>
     </>
   )

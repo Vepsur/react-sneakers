@@ -9,6 +9,7 @@ import { RootState } from "src/redux/store";
 import AppContext from "src/context";
 
 import styles from './Drawer.module.scss';
+import { Button } from "../Button/Button";
 
 type DrawerProps = {
   onRemove: any;
@@ -90,9 +91,16 @@ const Drawer: React.FC<DrawerProps> = React.memo((({ onRemove }) => {
                   <b>{Math.round(totalPrice * 5) / 100} руб.</b>
                 </li>
               </ul>
-              <button disabled={isLoading} onClick={onClickOrder} className={styles.greenButton}>
-                Оформить заказ <img src="img/checkout_arrow.svg" alt="Arrow" />
-              </button>
+              <Button
+                disabled={isLoading}
+                arrow
+                animDisabled
+                size="large"
+                widthFull
+                onClick={() => onClickOrder()}
+              >
+                Оформить заказ
+              </Button>
             </div>
           </>
         ) : (

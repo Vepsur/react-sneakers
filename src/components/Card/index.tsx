@@ -16,6 +16,11 @@ type CardProps = {
   stub: boolean;
 };
 
+/* const a: Pick<CardProps, "id" | "stub"> = {
+  id: 1,
+  stub: false
+} */
+
 const Card: React.FC<CardProps> = React.memo(({ id, imageUrl, title, price, inOrder, stub }) => {
   const { cartItemCheck, favoriteItemCheck, onAddToCart, onAddToFavorites, isLoading } = React.useContext(AppContext);
   const { itemsRespStatus } = useSelector((state: RootState) => state.sneakers);

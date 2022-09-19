@@ -3,6 +3,7 @@ import ContentLoader from "react-content-loader";
 import { Link } from 'react-router-dom';
 
 import AppContext from "../context";
+import { Button } from './Button/Button';
 
 type InfoProps = {
   favoritePage?: boolean;
@@ -46,9 +47,14 @@ const Info: React.FC<InfoProps> = React.memo(({ favoritePage, isOrdersLoading })
             </li>
             <li>
               <Link to={"/react-sneakers/"}>
-                <button className="greenButton">
-                  На главную <img src="img/return_arrow.svg" alt="Arrow" />
-                </button>
+                <Button
+                  arrow
+                  arrowLeft
+                  onClick={() => { }}
+                  size="large"
+                >
+                  На главную
+                </Button>
               </Link>
             </li>
           </ul>

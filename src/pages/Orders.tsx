@@ -4,6 +4,7 @@ import axios from "axios";
 import Info from "../components/Info";
 import Card from "../components/Card";
 import { Item } from "src/redux/slices/itemsSlice";
+import { Button } from "src/components/Button/Button";
 
 type OrderItems = {
   id: string;
@@ -66,20 +67,27 @@ const Orders: React.FC = React.memo(() => {
                   <div className="order mb-30 mt-30">
                     <div className="d-flex align-center">
                       <h2 className="mr-20">{`Заказ #${order.id}`}</h2>
-                      <button onClick={() => onCancelOrder(order.id)} className="greenButton redBtn">Отменить</button>
+                      <Button
+                        cancelBtn
+                        onClick={() => onCancelOrder(order.id)}
+                        size="micro"
+                      >
+                        Отменить
+                      </Button>
                     </div>
                     <div className="orderCardList">
                       {
                         order.items.map((item, index) => {
                           item ? stub = false : stub = true;
                           return (
-                          <Card
-                            inOrder={inOrder}
-                            stub={stub}
-                            key={`order${orderID}_card${index}`}
-                            {...item}
-                          />
-                        )})
+                            <Card
+                              inOrder={inOrder}
+                              stub={stub}
+                              key={`order${orderID}_card${index}`}
+                              {...item}
+                            />
+                          )
+                        })
                       }
                     </div>
                   </div>

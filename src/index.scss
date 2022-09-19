@@ -227,50 +227,6 @@ header {
   h2 {
     margin: 0;
   }
-
-  .greenButton {
-    position: relative;
-
-    &:hover {
-      img {
-        transform: translateX(-8px);
-      }
-    }
-
-    img {
-      position: absolute;
-      left: 30px;
-      top: 21px;
-      transition: transform 0.15s ease-in-out;
-    }
-  }
-}
-
-.greenButton {
-  max-width: 330px;
-  width: 100%;
-  height: 55px;
-  background: #9DD558;
-  border-radius: 18px;
-  border: none;
-  color: white;
-  font-size: 16px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.2s ease-in-out;
-
-  &:disabled {
-    background-color: #bebebe !important;
-    cursor: default;
-  }
-
-  &:hover {
-    background: lighten($color: #9DD558, $amount: 5%);
-  }
-
-  &:active {
-    background: darken($color: #9DD558, $amount: 5%);
-  }
 }
 
 .infoBtn {
@@ -278,21 +234,6 @@ header {
 
   &:hover {
     background: lighten($color: #89F09C, $amount: 5%);
-  }
-}
-
-.redBtn {
-  width: 90px;
-  height: 25px;
-  background: #de41418d;
-  border-radius: 10px;
-
-  &:hover {
-    background: lighten($color: #de4141, $amount: 5%);
-  }
-
-  &:active {
-    background: darken($color: #de4141, $amount: 5%);
   }
 }
 
